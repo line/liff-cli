@@ -1,0 +1,38 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  publish:
+    permissions:
+      id-token: write
+      contents: write
+    runs-on: ubuntu-latest
+    environment:
+      name: Production
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: ./.nvmrc
+
+      - run: npm ci
+      - run: node --run build
+
+      - uses: actions/setup-node@v3
+        with:
+          registry-url: https://registry.npmjs.org
+
+      - name: Publish to Public NPM
+        run: npm publish --tag latest --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.PUBLIC_NPM_TOKEN }}
+
+      - run: npx changelogen gh release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

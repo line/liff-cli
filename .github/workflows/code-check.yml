@@ -1,0 +1,33 @@
+name: Code Check
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: ./.nvmrc
+
+      - name: Get mkcert CLI
+        run: |
+          tmpdir="$(mktemp -d)"
+          wget -q -O mkcert "https://github.com/FiloSottile/mkcert/releases/download/v1.4.3/mkcert-v1.4.3-linux-amd64"
+          chmod +x ./mkcert
+          mv ./mkcert "${tmpdir}/mkcert"
+          echo "${tmpdir}" >> "$GITHUB_PATH"
+
+      - run: mkcert localhost
+      - run: npm ci
+      - run: npm run code-check
+      - run: npm run test
+      - run: npm run build

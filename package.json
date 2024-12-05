@@ -1,0 +1,53 @@
+{
+  "name": "@line/liff-cli",
+  "version": "0.2.0",
+  "description": "",
+  "type": "module",
+  "files": [
+    "dist",
+    "index.js"
+  ],
+  "bin": {
+    "liff-cli": "index.js"
+  },
+  "scripts": {
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "lint": "eslint src && publint --strict",
+    "code-check": "npm run format && npm run lint",
+    "test": "vitest",
+    "clean": "rm -rf dist",
+    "build": "npm run clean && tsc --project tsconfig.build.json",
+    "start": "./index.js",
+    "dev": "node --watch --watch-path=./src --watch-path=./dev.js dev.js",
+    "release": "changelogen --release"
+  },
+  "keywords": [],
+  "engines": {
+    "node": "22.2.0",
+    "npm": "10.7.0"
+  },
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@types/http-proxy": "1.17.15",
+    "@types/inquirer": "9.0.7",
+    "@types/node": "22.2.0",
+    "@typescript-eslint/eslint-plugin": "6.7.3",
+    "@typescript-eslint/parser": "6.7.3",
+    "changelogen": "0.5.5",
+    "eslint": "8.50.0",
+    "eslint-config-prettier": "9.1.0",
+    "msw": "2.3.1",
+    "prettier": "3.3.1",
+    "publint": "0.2.8",
+    "typescript": "5.4.5",
+    "vitest": "1.6.0"
+  },
+  "dependencies": {
+    "commander": "11.1.0",
+    "conf": "12.0.0",
+    "http-proxy": "1.18.1",
+    "inquirer": "9.2.23",
+    "picocolors": "1.1.0"
+  }
+}
