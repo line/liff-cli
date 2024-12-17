@@ -48,6 +48,8 @@
     "conf": "12.0.0",
     "http-proxy": "1.18.1",
     "inquirer": "9.2.23",
-    "picocolors": "1.1.0"
+    "node-pty": "1.0.0",
+    "picocolors": "1.1.0",
+    "strip-ansi": "7.1.0"
   }
 }

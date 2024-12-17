@@ -1,7 +1,8 @@
 import { Command } from "commander";
-import { LocalProxy } from "../proxy/local-proxy.js";
-import path from "path";
+// import { LocalProxy } from "../proxy/local-proxy.js";
+// import path from "path";
 import { serveAction } from "./serveAction.js";
+import { NgrokV1Proxy } from "../proxy/ngrok-v1-proxy.js";
 
 export const serveCommands = (program: Command) => {
   const serve = program.command("serve");
@@ -24,11 +25,15 @@ export const serveCommands = (program: Command) => {
       "9000",
     )
     .action(async (options) => {
-      const cwd = process.cwd();
-      const proxy = new LocalProxy({
-        keyPath: path.resolve(cwd, "localhost-key.pem"),
-        certPath: path.resolve(cwd, "localhost.pem"),
-        port: options.localProxyPort,
+      // TODO:
+      // const cwd = process.cwd();
+      // const proxy = new LocalProxy({
+      //   keyPath: path.resolve(cwd, "localhost-key.pem"),
+      //   certPath: path.resolve(cwd, "localhost.pem"),
+      //   port: options.localProxyPort,
+      // });
+      const proxy = new NgrokV1Proxy({
+        ngrokCommand: "~/ngrok/ngrok",
       });
       await serveAction(options, proxy);
     });
