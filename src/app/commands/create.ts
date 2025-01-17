@@ -2,12 +2,14 @@ import { createCommand } from "commander";
 import { LiffApiClient } from "../../api/liff.js";
 import { resolveChannel } from "../../channel/resolveChannel.js";
 
-const createAction = async (options: {
+export type CreateAppOptions = {
   channelId?: string;
   name: string;
   endpointUrl: string;
   viewType: string;
-}) => {
+}
+
+export const createLiffApp = async (options: CreateAppOptions) => {
   const accessToken = (await resolveChannel(options?.channelId))?.accessToken;
   if (!accessToken) {
     throw new Error(`Access token not found.
@@ -27,6 +29,12 @@ const createAction = async (options: {
     description: options.name,
   });
 
+  return liffId
+}
+
+const createAction = async (options: CreateAppOptions) => {
+  const liffId = await createLiffApp(options);
+
   console.info(`Successfully created LIFF app: ${liffId}`);
 };
 
@@ -41,11 +49,11 @@ export const makeCreateCommand = () => {
     .requiredOption("-n, --name <name>", "The name of the LIFF app")
     .requiredOption(
       "-e, --endpoint-url <endpointUrl>",
-      "The endpoint URL of the LIFF app",
+      "The endpoint URL of the LIFF app. Must be 'https://'",
     )
     .requiredOption(
       "-v, --view-type <viewType>",
-      "The view type of the LIFF app",
+      "The view type of the LIFF app. Must be 'compact', 'tall', or 'full'",
     )
     .action(createAction);
 
