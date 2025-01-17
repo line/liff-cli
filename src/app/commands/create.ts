@@ -7,7 +7,7 @@ export type CreateAppOptions = {
   name: string;
   endpointUrl: string;
   viewType: string;
-}
+};
 
 export const createLiffApp = async (options: CreateAppOptions) => {
   const accessToken = (await resolveChannel(options?.channelId))?.accessToken;
@@ -29,8 +29,8 @@ export const createLiffApp = async (options: CreateAppOptions) => {
     description: options.name,
   });
 
-  return liffId
-}
+  return liffId;
+};
 
 const createAction = async (options: CreateAppOptions) => {
   const liffId = await createLiffApp(options);

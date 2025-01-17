@@ -1,9 +1,11 @@
 import { Command } from "commander";
 import { addAction as addChannelAction } from "../channel/commands/add.js";
-import { execSync } from 'child_process';
+import { execSync } from "child_process";
 import { CreateAppOptions, createLiffApp } from "../app/commands/create.js";
 
-const addAction: (options: CreateAppOptions) => Promise<void> = async (options) => {
+const addAction: (options: CreateAppOptions) => Promise<void> = async (
+  options,
+) => {
   if (!options.channelId) {
     throw new Error("Channel ID is required.");
   }
@@ -17,7 +19,9 @@ const addAction: (options: CreateAppOptions) => Promise<void> = async (options) 
   const liffId = await createLiffApp(options);
 
   // 3. create liff app (@ client)
-    execSync(`npx @line/create-liff-app ${options.name} -l ${liffId}`, {stdio: 'inherit'});
+  execSync(`npx @line/create-liff-app ${options.name} -l ${liffId}`, {
+    stdio: "inherit",
+  });
 
   // 4. print instructions on how to run locally
   console.info(`App ${liffId} successfully created.
@@ -34,7 +38,8 @@ Now do the following:
 
 export const installInitCommands = (program: Command) => {
   const app = program.command("init");
-  app.description("Initialize new LIFF app")
+  app
+    .description("Initialize new LIFF app")
     .option(
       "-c, --channel-id [channelId]",
       "The channel ID to use. If it isn't specified, the currentChannelId's will be used.",

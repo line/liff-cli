@@ -7,7 +7,7 @@ import { serveCommands } from "./serve/index.js";
 export const setupCLI = (program: Command) => {
   installChannelCommands(program);
   installAppCommands(program);
-  installInitCommands(program)
+  installInitCommands(program);
   serveCommands(program);
   // TODO .version?
   return {
