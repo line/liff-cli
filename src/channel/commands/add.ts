@@ -3,7 +3,9 @@ import inquirer from "inquirer";
 
 import { renewAccessToken } from "../renewAccessToken.js";
 
-const addAction: (channelId?: string) => Promise<void> = async (channelId) => {
+export const addAction: (channelId?: string) => Promise<void> = async (
+  channelId,
+) => {
   if (!channelId) {
     throw new Error("Channel ID is required.");
   }
