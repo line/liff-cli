@@ -44,7 +44,7 @@ export const makeCreateCommand = () => {
     .description("Create a new LIFF app")
     .option(
       "-c, --channel-id [channelId]",
-      "The channel ID to use. If it isn't specified, the currentChannelId's will be used.",
+      "The channel ID to use. If it isn't specified, the currentChannelId will be used.",
     )
     .requiredOption("-n, --name <name>", "The name of the LIFF app")
     .requiredOption(
