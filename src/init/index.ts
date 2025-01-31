@@ -2,15 +2,55 @@ import { Command } from "commander";
 import { addAction as addChannelAction } from "../channel/commands/add.js";
 import { execSync } from "child_process";
 import { CreateAppOptions, createLiffApp } from "../app/commands/create.js";
+import inquirer from "inquirer";
+
+const DEFAULT_ENDPOINT_URL = 'https://localhost:9000'
 
 const addAction: (options: CreateAppOptions) => Promise<void> = async (
   options,
 ) => {
+  // collect required information via prompt if not specified via parameter
+  const promptItems = []
+
   if (!options.channelId) {
-    throw new Error("Channel ID is required.");
+    promptItems.push({
+      type: "input",
+      name: "channelId",
+      message: "Channel ID?",
+    });
   }
 
-  options.endpointUrl = "https://localhost:9000";
+  if (!options.name) {
+    promptItems.push({
+      type: "input",
+      name: "name",
+      message: "App name?",
+    });
+  }
+
+  if (!options.viewType) {
+    promptItems.push({
+      type: "list",
+      name: "viewType",
+      message: "View type?",
+      choices: ["compact", "tall", "full"],
+    });
+  }
+
+  if (!options.endpointUrl) {
+    promptItems.push({
+      type: "input",
+      name: "endpointUrl",
+      message: `Endpoint URL? (leave empty for default '${DEFAULT_ENDPOINT_URL}')`,
+    });
+  }
+
+  const promptInputs = await inquirer.prompt<{ [key: string]: string }>(promptItems);
+
+  options.channelId = promptInputs.channelId ?? options.channelId;
+  options.name = promptInputs.name ?? options.name;
+  options.viewType = promptInputs.viewType ?? options.viewType;
+  options.endpointUrl = promptInputs.endpointUrl?.length > 0 ? promptInputs.endpointUrl : DEFAULT_ENDPOINT_URL;
 
   // 1. add channel
   await addChannelAction(options.channelId);
@@ -44,10 +84,14 @@ export const installInitCommands = (program: Command) => {
       "-c, --channel-id [channelId]",
       "The channel ID to use. If it isn't specified, the currentChannelId's will be used.",
     )
-    .requiredOption("-n, --name <name>", "The name of the LIFF app")
-    .requiredOption(
+    .option("-n, --name <name>", "The name of the LIFF app")
+    .option(
       "-v, --view-type <viewType>",
       "The view type of the LIFF app. Must be 'compact', 'tall', or 'full'",
+    )
+    .option(
+      "-e, --endpoint-url <endpointUrl>",
+      "The endpoint URL of the LIFF app. Must be 'https://'",
     )
     .action(addAction);
 };
