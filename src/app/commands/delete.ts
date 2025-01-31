@@ -2,6 +2,7 @@ import { Command } from "commander";
 import { resolveChannel } from "../../channel/resolveChannel.js";
 import { LiffApiClient } from "../../api/liff.js";
 import inquirer from "inquirer";
+import { getLineBaseUrl } from "../../config/stores/common.js";
 
 const deleteAction = async (options: {
   channelId?: string;
@@ -24,9 +25,10 @@ const deleteAction = async (options: {
   ]);
   if (!confirmDelete) return;
 
+  const lineBaseUrl = getLineBaseUrl();
   const client = new LiffApiClient({
     token: accessToken,
-    baseUrl: "https://api.line.me",
+    baseUrl: lineBaseUrl,
   });
   console.info(`Deleting LIFF app...`);
   await client.deleteApp(options.liffId);
