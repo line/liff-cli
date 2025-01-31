@@ -4,13 +4,13 @@ import { execSync } from "child_process";
 import { CreateAppOptions, createLiffApp } from "../app/commands/create.js";
 import inquirer from "inquirer";
 
-const DEFAULT_ENDPOINT_URL = 'https://localhost:9000'
+const DEFAULT_ENDPOINT_URL = "https://localhost:9000";
 
 const addAction: (options: CreateAppOptions) => Promise<void> = async (
   options,
 ) => {
   // collect required information via prompt if not specified via parameter
-  const promptItems = []
+  const promptItems = [];
 
   if (!options.channelId) {
     promptItems.push({
@@ -45,12 +45,17 @@ const addAction: (options: CreateAppOptions) => Promise<void> = async (
     });
   }
 
-  const promptInputs = await inquirer.prompt<{ [key: string]: string }>(promptItems);
+  const promptInputs = await inquirer.prompt<{ [key: string]: string }>(
+    promptItems,
+  );
 
   options.channelId = promptInputs.channelId ?? options.channelId;
   options.name = promptInputs.name ?? options.name;
   options.viewType = promptInputs.viewType ?? options.viewType;
-  options.endpointUrl = promptInputs.endpointUrl?.length > 0 ? promptInputs.endpointUrl : DEFAULT_ENDPOINT_URL;
+  options.endpointUrl =
+    promptInputs.endpointUrl?.length > 0
+      ? promptInputs.endpointUrl
+      : DEFAULT_ENDPOINT_URL;
 
   // 1. add channel
   await addChannelAction(options.channelId);
