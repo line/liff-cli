@@ -1,4 +1,4 @@
-import { spawn } from "child_process";
+import { spawn } from "node:child_process";
 import { LiffApiClient } from "../api/liff.js";
 import { resolveChannel } from "../channel/resolveChannel.js";
 import { getCurrentChannelId } from "../channel/stores/channels.js";

@@ -5,7 +5,7 @@ import path from "path";
 import { Command } from "commander";
 import { serveAction } from "../serveAction.js";
 
-vi.mock("./serveAction");
+vi.mock("../serveAction.js");
 
 describe("serveCommand", () => {
   afterEach(() => {

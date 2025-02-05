@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { LiffApiClient } from "../api/liff.js";
 import { resolveChannel } from "../channel/resolveChannel.js";
 import { spawn } from "node:child_process";
-import { LocalProxy } from "../proxy/local-proxy.js";
+import { LocalProxy } from "./proxy/local-proxy.js";
 import path from "path";
 import { serveAction } from "./serveAction.js";
 
