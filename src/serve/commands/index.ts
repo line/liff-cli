@@ -1,9 +1,9 @@
 import { Command } from "commander";
 import { LocalProxy } from "../proxy/local-proxy.js";
 import path from "path";
-import { serveAction } from "./serveAction.js";
+import { serveAction } from "../serveAction.js";
 
-export const serveCommands = (program: Command) => {
+export const installServeCommands = (program: Command) => {
   const serve = program.command("serve");
   serve
     .description("Manage HTTPS dev server")
