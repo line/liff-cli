@@ -5,6 +5,7 @@ import { getCurrentChannelId } from "../channel/stores/channels.js";
 import { LocalProxy } from "../proxy/local-proxy.js";
 import resolveEndpointUrl from "./resolveEndpointUrl.js";
 import pc from "picocolors";
+import { getLiffBaseUrl, getLineBaseUrl } from "../config/stores/common.js";
 
 export const serveAction = async (
   options: {
@@ -48,12 +49,14 @@ export const serveAction = async (
   }
 
   const httpsUrl = await localProxy.connect(endpointUrl);
-  const liffUrl = new URL("https://liff.line.me/");
+  const liffBaseUrl = getLiffBaseUrl();
+  const liffUrl = new URL(liffBaseUrl);
   liffUrl.pathname = options.liffId;
 
+  const lineBaseUrl = getLineBaseUrl();
   const client = new LiffApiClient({
     token: accessToken,
-    baseUrl: "https://api.line.me",
+    baseUrl: lineBaseUrl,
   });
   await client.updateApp(options.liffId, {
     view: { url: httpsUrl.toString() },

@@ -1,6 +1,7 @@
 import { createCommand } from "commander";
 import { LiffApiClient } from "../../api/liff.js";
 import { resolveChannel } from "../../channel/resolveChannel.js";
+import { getLineBaseUrl } from "../../config/stores/common.js";
 
 const updateAction = async (options: {
   liffId: string;
@@ -16,9 +17,10 @@ const updateAction = async (options: {
     `);
   }
 
+  const lineBaseUrl = getLineBaseUrl();
   const client = new LiffApiClient({
     token: accessToken,
-    baseUrl: "https://api.line.me",
+    baseUrl: lineBaseUrl,
   });
   await client.updateApp(options.liffId, {
     view: {

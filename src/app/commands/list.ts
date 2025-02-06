@@ -1,6 +1,7 @@
 import { Command } from "commander";
 import { LiffApiClient } from "../../api/liff.js";
 import { resolveChannel } from "../../channel/resolveChannel.js";
+import { getLineBaseUrl } from "../../config/stores/common.js";
 
 const listAction = async (options: { channelId?: string }) => {
   const accessToken = (await resolveChannel(options?.channelId))?.accessToken;
@@ -10,9 +11,10 @@ const listAction = async (options: { channelId?: string }) => {
     `);
   }
 
+  const lineBaseUrl = getLineBaseUrl();
   const client = new LiffApiClient({
     token: accessToken,
-    baseUrl: "https://api.line.me",
+    baseUrl: lineBaseUrl,
   });
   const { apps } = await client.fetchApps();
 
