@@ -1,11 +1,11 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { serveCommands } from "./index.js";
+import { installServeCommands } from "./index.js";
 import { LocalProxy } from "../proxy/local-proxy.js";
 import path from "path";
 import { Command } from "commander";
-import { serveAction } from "./serveAction.js";
+import { serveAction } from "../serveAction.js";
 
-vi.mock("./serveAction");
+vi.mock("../serveAction.js");
 
 describe("serveCommand", () => {
   afterEach(() => {
@@ -30,7 +30,7 @@ describe("serveCommand", () => {
       port: "9001",
     });
 
-    const command = serveCommands(program);
+    const command = installServeCommands(program);
     await command.parseAsync([
       "_",
       "serve",
