@@ -19,7 +19,9 @@ describe("serveCommand", () => {
       url: "https://example.com?hoge=fuga",
       host: "https://example.com",
       port: "8000",
+      proxyType: "local-proxy",
       localProxyPort: "9001",
+      ngrokCommand: "ngrok",
       inspect: true,
     };
 
@@ -45,6 +47,10 @@ describe("serveCommand", () => {
       "--local-proxy-port",
       options.localProxyPort,
       "--inspect",
+      "--proxy-type",
+      options.proxyType,
+      "--ngrok-command",
+      options.ngrokCommand,
     ]);
 
     expect(serveAction).toHaveBeenCalledWith(options, proxy);
