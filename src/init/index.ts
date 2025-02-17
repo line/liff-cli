@@ -6,10 +6,7 @@ import inquirer from "inquirer";
 
 const DEFAULT_ENDPOINT_URL = "https://localhost:9000";
 
-const addAction: (options: CreateAppOptions) => Promise<void> = async (
-  options,
-) => {
-  // collect required information via prompt if not specified via parameter
+async function makeOptions(options: CreateAppOptions) {
   const promptItems = [];
 
   if (!options.channelId) {
@@ -45,8 +42,8 @@ const addAction: (options: CreateAppOptions) => Promise<void> = async (
     });
   }
 
-  const promptInputs = await inquirer.prompt<{ [key: string]: string }>(
-    promptItems,
+  const promptInputs = await inquirer.prompt<{ [key: string]: string; }>(
+    promptItems
   );
 
   options.channelId = promptInputs.channelId ?? options.channelId;
@@ -57,14 +54,23 @@ const addAction: (options: CreateAppOptions) => Promise<void> = async (
       ? promptInputs.endpointUrl
       : DEFAULT_ENDPOINT_URL;
 
+  return options
+}
+
+export const initAction: (options: CreateAppOptions) => Promise<void> = async (
+  options,
+) => {
+  // collect required information via prompt if not specified via parameter
+  const consolidatedOptions = await makeOptions(options);
+
   // 1. add channel
-  await addChannelAction(options.channelId);
+  await addChannelAction(consolidatedOptions.channelId);
 
   // 2. create liff app (@ server)
-  const liffId = await createLiffApp(options);
+  const liffId = await createLiffApp(consolidatedOptions);
 
   // 3. create liff app (@ client)
-  execSync(`npx @line/create-liff-app ${options.name} -l ${liffId}`, {
+  execSync(`npx @line/create-liff-app ${consolidatedOptions.name} -l ${liffId}`, {
     stdio: "inherit",
   });
 
@@ -72,10 +78,10 @@ const addAction: (options: CreateAppOptions) => Promise<void> = async (
   console.info(`App ${liffId} successfully created.
 
 Now do the following:
-  1. go to app directory: \`cd ${options.name}\`
+  1. go to app directory: \`cd ${consolidatedOptions.name}\`
   2. create certificate key files (e.g. \`mkcert localhost\`, see: https://developers.line.biz/en/docs/liff/liff-cli/#serve-operating-conditions )
   3. run LIFF app template using command above (e.g. \`npm run dev\` or \`yarn dev\`)
-  4. open new terminal window, navigate to \`${options.name}\` directory
+  4. open new terminal window, navigate to \`${consolidatedOptions.name}\` directory
   5. run \`liff-cli serve -l ${liffId} -u http://localhost:\${PORT FROM STEP 3.}/\`
   6. open browser and navigate to http://localhost:\${PORT FROM STEP 3.}/
 `);
@@ -98,5 +104,5 @@ export const installInitCommands = (program: Command) => {
       "-e, --endpoint-url <endpointUrl>",
       "The endpoint URL of the LIFF app. Must be 'https://'",
     )
-    .action(addAction);
+    .action(initAction);
 };

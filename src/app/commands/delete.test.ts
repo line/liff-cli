@@ -99,7 +99,7 @@ describe("makeDeleteCommand", () => {
     expect(mockDeleteApp).not.toHaveBeenCalled();
   });
 
-  it("should not delete a LIFF app if user cancels the deletio", async () => {
+  it("should not delete a LIFF app if user cancels the deletion", async () => {
     vi.mocked(resolveChannel).mockResolvedValueOnce({
       accessToken: "token",
       expiresIn: 3600,
