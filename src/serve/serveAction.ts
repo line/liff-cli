@@ -1,8 +1,8 @@
-import { spawn } from "child_process";
+import { spawn } from "node:child_process";
 import { LiffApiClient } from "../api/liff.js";
 import { resolveChannel } from "../channel/resolveChannel.js";
 import { getCurrentChannelId } from "../channel/stores/channels.js";
-import { LocalProxy } from "../proxy/local-proxy.js";
+import { ProxyInterface } from "./proxy/proxy-interface.js";
 import resolveEndpointUrl from "./resolveEndpointUrl.js";
 import pc from "picocolors";
 
@@ -15,7 +15,7 @@ export const serveAction = async (
     inspect?: boolean;
     localProxyPort: string;
   },
-  localProxy: LocalProxy,
+  proxy: ProxyInterface,
 ) => {
   const accessToken = (await resolveChannel(getCurrentChannelId()))
     ?.accessToken;
@@ -47,7 +47,7 @@ export const serveAction = async (
     endpointUrl.searchParams.set("li.origin", "wss://localhost:9222");
   }
 
-  const httpsUrl = await localProxy.connect(endpointUrl);
+  const httpsUrl = await proxy.connect(endpointUrl);
   const liffUrl = new URL("https://liff.line.me/");
   liffUrl.pathname = options.liffId;
 

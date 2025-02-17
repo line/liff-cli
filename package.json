@@ -38,6 +38,7 @@
     "eslint": "8.50.0",
     "eslint-config-prettier": "9.1.0",
     "msw": "2.3.1",
+    "node-pty": "1.0.0",
     "prettier": "3.3.1",
     "publint": "0.2.8",
     "typescript": "5.4.5",
@@ -48,6 +49,15 @@
     "conf": "12.0.0",
     "http-proxy": "1.18.1",
     "inquirer": "9.2.23",
-    "picocolors": "1.1.0"
+    "picocolors": "1.1.0",
+    "strip-ansi": "7.1.0"
+  },
+  "peerDependencies": {
+    "node-pty": "^1.0.0"
+  },
+  "peerDependenciesMeta": {
+    "node-pty": {
+      "optional": true
+    }
   }
 }

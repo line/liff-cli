@@ -1,9 +1,8 @@
 import { Command } from "commander";
-import { LocalProxy } from "../proxy/local-proxy.js";
-import path from "path";
-import { serveAction } from "./serveAction.js";
+import { serveAction } from "../serveAction.js";
+import { resolveProxy } from "../resolveProxy.js";
 
-export const serveCommands = (program: Command) => {
+export const installServeCommands = (program: Command) => {
   const serve = program.command("serve");
   serve
     .description("Manage HTTPS dev server")
@@ -19,17 +18,22 @@ export const serveCommands = (program: Command) => {
       "The flag indicates LIFF app starts on debug mode. (default: false)",
     )
     .option(
+      "--proxy-type <proxyType>",
+      "The type of proxy to use. local-proxy or ngrok-v1",
+      "local-proxy",
+    )
+    .option(
       "--local-proxy-port <localProxyPort>",
       "The port number of the application proxy server to listen on when running the CLI.",
       "9000",
     )
+    .option(
+      "--ngrok-command <ngrokCommand>",
+      "The command to run ngrok.",
+      "ngrok",
+    )
     .action(async (options) => {
-      const cwd = process.cwd();
-      const proxy = new LocalProxy({
-        keyPath: path.resolve(cwd, "localhost-key.pem"),
-        certPath: path.resolve(cwd, "localhost.pem"),
-        port: options.localProxyPort,
-      });
+      const proxy = resolveProxy(options);
       await serveAction(options, proxy);
     });
   return serve;
