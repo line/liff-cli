@@ -1,10 +1,4 @@
-import {
-  afterEach,
-  describe,
-  expect,
-  it,
-  vi,
-} from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import inquire from "inquirer";
 
@@ -28,9 +22,9 @@ describe("initAction", () => {
     vi.mocked(inquire.prompt).mockResolvedValue(promptInputs);
 
     await initAction({
-      name: '',
-      viewType: '',
-      endpointUrl: '',
+      name: "",
+      viewType: "",
+      endpointUrl: "",
     });
 
     expect(inquire.prompt).toHaveBeenCalled();

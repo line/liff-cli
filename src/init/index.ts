@@ -42,8 +42,8 @@ async function makeOptions(options: CreateAppOptions) {
     });
   }
 
-  const promptInputs = await inquirer.prompt<{ [key: string]: string; }>(
-    promptItems
+  const promptInputs = await inquirer.prompt<{ [key: string]: string }>(
+    promptItems,
   );
 
   options.channelId = promptInputs.channelId ?? options.channelId;
@@ -54,7 +54,7 @@ async function makeOptions(options: CreateAppOptions) {
       ? promptInputs.endpointUrl
       : DEFAULT_ENDPOINT_URL;
 
-  return options
+  return options;
 }
 
 export const initAction: (options: CreateAppOptions) => Promise<void> = async (
@@ -70,9 +70,12 @@ export const initAction: (options: CreateAppOptions) => Promise<void> = async (
   const liffId = await createLiffApp(consolidatedOptions);
 
   // 3. create liff app (@ client)
-  execSync(`npx @line/create-liff-app ${consolidatedOptions.name} -l ${liffId}`, {
-    stdio: "inherit",
-  });
+  execSync(
+    `npx @line/create-liff-app ${consolidatedOptions.name} -l ${liffId}`,
+    {
+      stdio: "inherit",
+    },
+  );
 
   // 4. print instructions on how to run locally
   console.info(`App ${liffId} successfully created.
