@@ -82,6 +82,6 @@ export const installInitCommands = (program: Command) => {
       "-e, --endpoint-url <endpointUrl>",
       "The endpoint URL of the LIFF app. Must be 'https://'",
     )
-    .action(options => initAction(options));
+    .action((options) => initAction(options));
   return init;
 };
