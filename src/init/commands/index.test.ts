@@ -22,7 +22,7 @@ describe("makeOptions", () => {
       channelId: "789",
       name: "hoge",
       viewType: "tall",
-      endpointUrl: "https://this-will-be-ignored.com",
+      endpointUrl: "https://example.com/this-will-be-ignored",
     });
 
     const result = await makeOptions(TEST_OPTIONS);

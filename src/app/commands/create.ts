@@ -2,7 +2,7 @@ import { createCommand } from "commander";
 import { LiffApiClient } from "../../api/liff.js";
 import { resolveChannel } from "../../channel/resolveChannel.js";
 
-export type CreateAppOptions = {
+type CreateAppOptions = {
   channelId?: string;
   name: string;
   endpointUrl: string;
