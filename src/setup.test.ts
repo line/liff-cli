@@ -25,6 +25,7 @@ Options:
 Commands:
   channel          Manage LIFF channels
   app              Manage LIFF apps
+  init [options]   Initialize new LIFF app
   serve [options]  Manage HTTPS dev server
   help [command]   display help for command
 `);
