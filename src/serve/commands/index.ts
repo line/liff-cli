@@ -28,13 +28,18 @@ export const installServeCommands = (program: Command) => {
       "9000",
     )
     .option(
+      "--local-proxy-inspector-port <localProxyInspectorPort>",
+      "The port number of the inspector proxy server to listen on when running the CLI.",
+      "9223",
+    )
+    .option(
       "--ngrok-command <ngrokCommand>",
       "The command to run ngrok.",
       "ngrok",
     )
     .action(async (options) => {
-      const proxy = resolveProxy(options);
-      await serveAction(options, proxy);
+      const { liffAppProxy, liffInspectorProxy } = resolveProxy(options);
+      await serveAction(options, liffAppProxy, liffInspectorProxy);
     });
   return serve;
 };
