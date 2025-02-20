@@ -6,6 +6,21 @@ import { ProxyInterface } from "./proxy/proxy-interface.js";
 import resolveEndpointUrl from "./resolveEndpointUrl.js";
 import pc from "picocolors";
 
+const setupLiffInspector = async (liffInspectorProxy: ProxyInterface) => {
+  const LIFF_INSPECTOR_DEFAULT_PORT = "9222";
+  const liffInspectorUrl = new URL("ws://localhost");
+  liffInspectorUrl.port = LIFF_INSPECTOR_DEFAULT_PORT;
+
+  spawn("npx", ["@line/liff-inspector"], {
+    shell: true,
+    stdio: "inherit",
+  });
+
+  const wssUrl = await liffInspectorProxy.connect(liffInspectorUrl);
+
+  return wssUrl;
+};
+
 export const serveAction = async (
   options: {
     liffId: string;
@@ -15,7 +30,8 @@ export const serveAction = async (
     inspect?: boolean;
     localProxyPort: string;
   },
-  proxy: ProxyInterface,
+  liffAppProxy: ProxyInterface,
+  liffInspectorProxy: ProxyInterface,
 ) => {
   const accessToken = (await resolveChannel(getCurrentChannelId()))
     ?.accessToken;
@@ -31,23 +47,11 @@ export const serveAction = async (
     port: options.port,
   });
 
-  if (options.inspect) {
-    spawn(
-      "npx",
-      [
-        "@line/liff-inspector",
-        "--key=./localhost-key.pem",
-        "--cert=./localhost.pem",
-      ],
-      {
-        shell: true,
-        stdio: "inherit",
-      },
-    );
-    endpointUrl.searchParams.set("li.origin", "wss://localhost:9222");
-  }
+  const wssUrl = options.inspect
+    ? await setupLiffInspector(liffInspectorProxy)
+    : undefined;
+  const httpsUrl = await liffAppProxy.connect(endpointUrl);
 
-  const httpsUrl = await proxy.connect(endpointUrl);
   const liffUrl = new URL("https://liff.line.me/");
   liffUrl.pathname = options.liffId;
 
@@ -55,6 +59,10 @@ export const serveAction = async (
     token: accessToken,
     baseUrl: "https://api.line.me",
   });
+  if (wssUrl) {
+    httpsUrl.searchParams.set("li.origin", wssUrl.toString());
+  }
+
   await client.updateApp(options.liffId, {
     view: { url: httpsUrl.toString() },
   });

@@ -7,23 +7,40 @@ import { ProxyInterface } from "./proxy/proxy-interface.js";
 type Options = {
   proxyType: string;
   localProxyPort: string;
+  localProxyInspectorPort: string;
   ngrokCommand: string;
 };
 
-export const resolveProxy = (options: Options): ProxyInterface => {
+export const resolveProxy = (
+  options: Options,
+): { liffAppProxy: ProxyInterface; liffInspectorProxy: ProxyInterface } => {
   if (options.proxyType === "local-proxy") {
     const cwd = process.cwd();
-    return new LocalProxy({
-      keyPath: path.resolve(cwd, "localhost-key.pem"),
-      certPath: path.resolve(cwd, "localhost.pem"),
-      port: options.localProxyPort,
-    });
+    const keyPath = path.resolve(cwd, "localhost-key.pem");
+    const certPath = path.resolve(cwd, "localhost.pem");
+    return {
+      liffAppProxy: new LocalProxy({
+        keyPath,
+        certPath,
+        port: options.localProxyPort,
+      }),
+      liffInspectorProxy: new LocalProxy({
+        keyPath,
+        certPath,
+        port: options.localProxyInspectorPort,
+      }),
+    };
   }
 
   if (options.proxyType === "ngrok-v1") {
-    return new NgrokV1Proxy({
-      ngrokCommand: options.ngrokCommand,
-    });
+    return {
+      liffAppProxy: new NgrokV1Proxy({
+        ngrokCommand: options.ngrokCommand,
+      }),
+      liffInspectorProxy: new NgrokV1Proxy({
+        ngrokCommand: options.ngrokCommand,
+      }),
+    };
   }
 
   throw new Error(`Unknown proxy type: ${options.proxyType}`);

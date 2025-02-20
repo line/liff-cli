@@ -21,15 +21,25 @@ describe("serveCommand", () => {
       port: "8000",
       proxyType: "local-proxy",
       localProxyPort: "9001",
+      localProxyInspectorPort: "9223",
       ngrokCommand: "ngrok",
       inspect: true,
     };
 
     const cwd = process.cwd();
-    const proxy = new LocalProxy({
-      keyPath: path.resolve(cwd, "localhost-key.pem"),
-      certPath: path.resolve(cwd, "localhost.pem"),
+    const keyPath = path.resolve(cwd, "localhost-key.pem");
+    const certPath = path.resolve(cwd, "localhost.pem");
+
+    const liffAppProxy = new LocalProxy({
+      keyPath,
+      certPath,
       port: "9001",
+    });
+
+    const liffInspectorProxy = new LocalProxy({
+      keyPath,
+      certPath,
+      port: "9223",
     });
 
     const command = installServeCommands(program);
@@ -46,6 +56,8 @@ describe("serveCommand", () => {
       options.port,
       "--local-proxy-port",
       options.localProxyPort,
+      "--local-proxy-inspector-port",
+      options.localProxyInspectorPort,
       "--inspect",
       "--proxy-type",
       options.proxyType,
@@ -53,6 +65,10 @@ describe("serveCommand", () => {
       options.ngrokCommand,
     ]);
 
-    expect(serveAction).toHaveBeenCalledWith(options, proxy);
+    expect(serveAction).toHaveBeenCalledWith(
+      options,
+      liffAppProxy,
+      liffInspectorProxy,
+    );
   });
 });

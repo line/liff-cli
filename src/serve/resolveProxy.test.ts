@@ -8,26 +8,35 @@ describe("resolveProxy", () => {
     const options = {
       proxyType: "local-proxy",
       localProxyPort: "9000",
+      localProxyInspectorPort: "9223",
       ngrokCommand: "ngrok",
     };
 
-    expect(resolveProxy(options)).toBeInstanceOf(LocalProxy);
+    expect(resolveProxy(options)).toEqual({
+      liffAppProxy: expect.any(LocalProxy),
+      liffInspectorProxy: expect.any(LocalProxy),
+    });
   });
 
   it("should return NgrokV1Proxy when proxyType is ngrok-v1", () => {
     const options = {
       proxyType: "ngrok-v1",
       localProxyPort: "9000",
+      localProxyInspectorPort: "9223",
       ngrokCommand: "ngrok",
     };
 
-    expect(resolveProxy(options)).toBeInstanceOf(NgrokV1Proxy);
+    expect(resolveProxy(options)).toEqual({
+      liffAppProxy: expect.any(NgrokV1Proxy),
+      liffInspectorProxy: expect.any(NgrokV1Proxy),
+    });
   });
 
   it("should throw an error when an unknown proxyType is specified", () => {
     const options = {
       proxyType: "unknown",
       localProxyPort: "9000",
+      localProxyInspectorPort: "9223",
       ngrokCommand: "ngrok",
     };
 
