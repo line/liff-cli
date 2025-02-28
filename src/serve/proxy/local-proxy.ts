@@ -87,7 +87,6 @@ export class LocalProxy implements ProxyInterface {
           proxy.ws(req, socket, head);
         })
         .on("error", (e) => {
-          console.log(e);
           reject(e);
         });
     });
