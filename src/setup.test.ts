@@ -100,22 +100,16 @@ Commands:
 Manage HTTPS dev server
 
 Options:
-  -l, --liff-id <liffId>               The LIFF id that the user wants to
-                                       update.
-  -u, --url <url>                      The local URL of the LIFF app.
-  --host <host>                        The host of the application server.
-  --port <port>                        The port number of the application
-                                       server.
-  -i, --inspect                        The flag indicates LIFF app starts on
-                                       debug mode. (default: false)
-  --proxy-type <proxyType>             The type of proxy to use. local-proxy or
-                                       ngrok-v1 (default: "local-proxy")
-  --local-proxy-port <localProxyPort>  The port number of the application proxy
-                                       server to listen on when running the
-                                       CLI. (default: "9000")
-  --ngrok-command <ngrokCommand>       The command to run ngrok. (default:
-                                       "ngrok")
-  -h, --help                           display help for command
+  -l, --liff-id <liffId>                                  The LIFF id that the user wants to update.
+  -u, --url <url>                                         The local URL of the LIFF app.
+  --host <host>                                           The host of the application server.
+  --port <port>                                           The port number of the application server.
+  -i, --inspect                                           The flag indicates LIFF app starts on debug mode. (default: false)
+  --proxy-type <proxyType>                                The type of proxy to use. local-proxy or ngrok-v1 (default: "local-proxy")
+  --local-proxy-port <localProxyPort>                     The port number of the application proxy server to listen on when running the CLI. (default: "9000")
+  --local-proxy-inspector-port <localProxyInspectorPort>  The port number of the inspector proxy server to listen on when running the CLI. (default: "9223")
+  --ngrok-command <ngrokCommand>                          The command to run ngrok. (default: "ngrok")
+  -h, --help                                              display help for command
 `);
   });
 });

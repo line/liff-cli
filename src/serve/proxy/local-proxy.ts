@@ -28,6 +28,18 @@ export class LocalProxy implements ProxyInterface {
   }
 
   async connect(targetUrl: URL): Promise<URL> {
+    if (targetUrl.protocol === "http:") {
+      return this.connectHttp(targetUrl);
+    }
+
+    if (targetUrl.protocol === "ws:") {
+      return this.connectWs(targetUrl);
+    }
+
+    throw new Error(`Unsupported protocol: ${targetUrl.protocol}`);
+  }
+
+  private async connectHttp(targetUrl: URL): Promise<URL> {
     const proxy = httpProxy.createProxyServer({});
 
     const proxyUrl = new URL("https://localhost");
@@ -55,8 +67,33 @@ export class LocalProxy implements ProxyInterface {
     });
   }
 
-  async cleanup(): Promise<void> {
+  private async connectWs(targetUrl: URL): Promise<URL> {
+    const proxy = httpProxy.createProxyServer({ target: targetUrl.toString() });
+
+    const proxyUrl = new URL("wss://localhost");
+    proxyUrl.port = this.port;
+
     return new Promise((resolve, reject) => {
+      this.server = https
+        .createServer({ key: this.key, cert: this.cert }, (req, res) => {
+          proxy.web(req, res);
+        })
+        .listen(this.port)
+        .on("listening", () => {
+          resolve(proxyUrl);
+        })
+        .on("upgrade", function (req, socket, head) {
+          req.headers["x-forwarded-proto"] = "https";
+          proxy.ws(req, socket, head);
+        })
+        .on("error", (e) => {
+          reject(e);
+        });
+    });
+  }
+
+  async cleanup(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
       if (!this.server) {
         resolve();
         return;
@@ -65,6 +102,8 @@ export class LocalProxy implements ProxyInterface {
         if (e) reject(e);
         else resolve();
       });
+    }).finally(() => {
+      this.server = undefined;
     });
   }
 }
