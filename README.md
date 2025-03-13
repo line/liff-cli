@@ -76,6 +76,20 @@ $ liff-cli app delete \
     --channel-id [channelId]
 ```
 
+### Init Command
+
+The `init` command sets up a development environment for LIFF apps using the LIFF CLI.
+
+This command creates a new LIFF app and uses `@line/create-liff-app` to generate the LIFF app template.
+
+```sh
+$ liff-cli init \
+    --channel-id [channelId] \
+    --name <name> \
+    --endpoint-url <endpointUrl> \
+    --view-type <viewType>
+```
+
 ### Scaffold Command
 
 The `scaffold` command is used to create a new LIFF app template using the `@line/create-liff-app` utility.
