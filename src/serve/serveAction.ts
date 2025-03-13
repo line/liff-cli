@@ -1,7 +1,10 @@
 import { spawn } from "node:child_process";
 import { LiffApiClient } from "../api/liff.js";
 import { resolveChannel } from "../channel/resolveChannel.js";
-import { getCurrentChannelId } from "../channel/stores/channels.js";
+import {
+  getCurrentChannelId,
+  getLiffBaseUrl,
+} from "../channel/stores/channels.js";
 import { ProxyInterface } from "./proxy/proxy-interface.js";
 import resolveEndpointUrl from "./resolveEndpointUrl.js";
 import pc from "picocolors";
@@ -17,9 +20,15 @@ export const serveAction = async (
   },
   proxy: ProxyInterface,
 ) => {
-  const accessToken = (await resolveChannel(getCurrentChannelId()))
-    ?.accessToken;
-  if (!accessToken) {
+  const currentChannelId = getCurrentChannelId();
+  if (!currentChannelId) {
+    throw new Error(`Current channel not set.
+        Please set the current channel first.
+        `);
+  }
+
+  const channelInfo = await resolveChannel(currentChannelId);
+  if (!channelInfo) {
     throw new Error(`Access token not found.
         Please set the current channel first.
         `);
@@ -48,12 +57,13 @@ export const serveAction = async (
   }
 
   const httpsUrl = await proxy.connect(endpointUrl);
-  const liffUrl = new URL("https://liff.line.me/");
+  const liffBaseUrl = getLiffBaseUrl(currentChannelId);
+  const liffUrl = new URL(liffBaseUrl);
   liffUrl.pathname = options.liffId;
 
   const client = new LiffApiClient({
-    token: accessToken,
-    baseUrl: "https://api.line.me",
+    token: channelInfo.accessToken,
+    baseUrl: liffBaseUrl,
   });
   await client.updateApp(options.liffId, {
     view: { url: httpsUrl.toString() },
