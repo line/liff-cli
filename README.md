@@ -85,9 +85,11 @@ $ liff-cli scaffold <app-name> [options]
 ```
 
 Options:
+
 - `-l, --liff-id [liffId]` - Optional LIFF ID to use with the app template
 
 Example:
+
 ```sh
 $ liff-cli scaffold my-liff-app
 $ liff-cli scaffold my-liff-app --liff-id 1234567-abcdef
