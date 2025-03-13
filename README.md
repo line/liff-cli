@@ -120,7 +120,7 @@ $ mkcert localhost
 
 3. Place the generated `localhost.pem` and `localhost-key.pem` files in the root directory of your project.
 
-##### When using `ngrok-v1`
+#### When using `ngrok-v1`
 
 > [!WARNING]
 > This feature is experimental.
