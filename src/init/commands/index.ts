@@ -13,7 +13,9 @@ export type InitOptions = {
 
 export async function makeOptions(
   options: InitOptions,
-): Promise<Required<InitOptions>> {
+): Promise<
+  Required<Omit<InitOptions, "channelId">> & Pick<InitOptions, "channelId">
+> {
   const promptItems = [];
 
   if (!options.channelId) {
@@ -54,7 +56,7 @@ export async function makeOptions(
   );
 
   return {
-    channelId: options.channelId ?? promptInputs.channelId,
+    channelId: options.channelId ?? (promptInputs.channelId || undefined),
     name: options.name ?? promptInputs.name,
     viewType: options.viewType ?? promptInputs.viewType,
     endpointUrl:
