@@ -26,6 +26,7 @@ Commands:
   channel          Manage LIFF channels
   app              Manage LIFF apps
   serve [options]  Manage HTTPS dev server
+  config           Manage LIFF CLI configuration
   help [command]   display help for command
 `);
   });
