@@ -20,14 +20,16 @@ describe("setupCLI", () => {
     expect(writeMock).toHaveBeenCalledWith(`Usage: index [options] [command]
 
 Options:
-  -h, --help       display help for command
+  -h, --help                 display help for command
 
 Commands:
-  channel          Manage LIFF channels
-  app              Manage LIFF apps
-  init [options]   Initialize new LIFF app
-  serve [options]  Manage HTTPS dev server
-  help [command]   display help for command
+  channel                    Manage LIFF channels
+  app                        Manage LIFF apps
+  init [options]             Initialize new LIFF app
+  serve [options]            Manage HTTPS dev server
+  scaffold [options] <name>  Create a new LIFF app template using
+                             @line/create-liff-app
+  help [command]             display help for command
 `);
   });
 
