@@ -113,7 +113,9 @@ $ liff-cli scaffold my-liff-app --liff-id 1234567-abcdef
 
 The `serve` command is used to start local dev server with HTTPS and update an endpoint URL.
 
-#### Creating Certificates
+#### When using `local-proxy`
+
+##### Creating Certificates
 
 Before using the `serve` command, you need to create `localhost.pem` and `localhost-key.pem` in the root directory using `mkcert`. Follow these steps:
 
@@ -132,6 +134,13 @@ $ mkcert localhost
 
 3. Place the generated `localhost.pem` and `localhost-key.pem` files in the root directory of your project.
 
+#### When using `ngrok-v1`
+
+> [!WARNING]
+> This feature is experimental.
+
+Before using the `serve` command, you need to install [ngrok](https://github.com/inconshreveable/ngrok) and [node-pty](https://www.npmjs.com/package/node-pty).
+
 #### Running the Server
 
 **Before proceeding, ensure that your LIFF app is running locally.** The `url` (or `host` and `port`) used in the following commands should correspond to your locally running LIFF app.
@@ -141,7 +150,8 @@ To start the server, use one of the following commands:
 ```sh
 $ liff-cli serve \
     --liff-id <liffId> \
-    --url <url>
+    --url <url> \
+    --proxy-type <local-proxy | ngrok-v1> \
     --inspect
 ```
 
@@ -150,8 +160,9 @@ or
 ```sh
 $ liff-cli serve \
     --liff-id <liffId> \
-    --host <host>
-    --port <port>
+    --host <host> \
+    --port <port> \
+    --proxy-type <local-proxy | ngrok-v1> \
     --inspect
 
 ```

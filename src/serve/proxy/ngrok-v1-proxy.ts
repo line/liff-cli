@@ -24,6 +24,9 @@ async function tryImportNodePty(): Promise<typeof pty> {
   }
 }
 
+/**
+ * @experimental
+ */
 export class NgrokV1Proxy implements ProxyInterface {
   private ptyProcess?: pty.IPty;
 
