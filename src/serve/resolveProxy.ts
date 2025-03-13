@@ -33,6 +33,7 @@ export const resolveProxy = (
   }
 
   if (options.proxyType === "ngrok-v1") {
+    console.info("ngrok-v1 is experimental feature.");
     return {
       liffAppProxy: new NgrokV1Proxy({
         ngrokCommand: options.ngrokCommand,
