@@ -76,6 +76,23 @@ $ liff-cli app delete \
     --channel-id [channelId]
 ```
 
+### Scaffold Command
+
+The `scaffold` command is used to create a new LIFF app template using the `@line/create-liff-app` utility.
+
+```sh
+$ liff-cli scaffold <app-name> [options]
+```
+
+Options:
+- `-l, --liff-id [liffId]` - Optional LIFF ID to use with the app template
+
+Example:
+```sh
+$ liff-cli scaffold my-liff-app
+$ liff-cli scaffold my-liff-app --liff-id 1234567-abcdef
+```
+
 ### Serve Commands
 
 The `serve` command is used to start local dev server with HTTPS and update an endpoint URL.
