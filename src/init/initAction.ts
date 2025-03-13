@@ -2,6 +2,7 @@ import { execSync } from "child_process";
 import { addAction as addChannelAction } from "../channel/commands/add.js";
 import { createLiffApp } from "../app/commands/create.js";
 import { InitOptions, makeOptions } from "./commands/index.js";
+import { resolveChannel } from "../channel/resolveChannel.js";
 
 export const initAction: (options: InitOptions) => Promise<void> = async (
   options,
@@ -9,13 +10,18 @@ export const initAction: (options: InitOptions) => Promise<void> = async (
   // collect required information via prompt if not specified via parameter
   const consolidatedOptions = await makeOptions(options);
 
-  // 1. add channel
-  await addChannelAction(consolidatedOptions.channelId);
+  if (consolidatedOptions.channelId) {
+    const channel = await resolveChannel(consolidatedOptions.channelId);
+    if (!channel) {
+      // not registered yet, add it
+      await addChannelAction(consolidatedOptions.channelId);
+    }
+  }
 
-  // 2. create liff app (@ server)
+  // create liff app (@ server)
   const liffId = await createLiffApp(consolidatedOptions);
 
-  // 3. create liff app (@ client)
+  // create liff app (@ client)
   execSync(
     `npx @line/create-liff-app "${consolidatedOptions.name}" -l ${liffId}`,
     {
@@ -23,7 +29,7 @@ export const initAction: (options: InitOptions) => Promise<void> = async (
     },
   );
 
-  // 4. print instructions on how to run locally
+  // print instructions on how to run locally
   console.info(`App ${liffId} successfully created.
 
 Now do the following:

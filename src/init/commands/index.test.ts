@@ -73,6 +73,22 @@ describe("makeOptions", () => {
       endpointUrl: "https://localhost:9000",
     });
   });
+
+  it("should return channelId as undefined when not specified", async () => {
+    vi.mocked(inquire.prompt).mockResolvedValue({
+      channelId: "",
+      name: "My App",
+      viewType: "compact",
+      endpointUrl: "https://example.com",
+    });
+
+    const result = await makeOptions({});
+
+    expect(result).toEqual({
+      ...TEST_OPTIONS,
+      channelId: undefined,
+    });
+  });
 });
 
 describe("installInitCommands", async () => {
