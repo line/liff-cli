@@ -1,10 +1,7 @@
 import { createCommand } from "commander";
-import {
-  getCurrentChannelId,
-  setApiBaseUrl,
-  setLiffBaseUrl,
-} from "../../channel/stores/channels.js";
+import { getCurrentChannelId } from "../../channel/stores/channels.js";
 import { BASE_URL_CONFIG, VALID_CONFIG_KEYS } from "../constants.js";
+import { setApiBaseUrl, setLiffBaseUrl } from "../../channel/baseUrl.js";
 
 type ConfigValue = {
   key: string;

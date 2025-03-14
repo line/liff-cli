@@ -45,6 +45,11 @@ describe("makeUpdateCommand", () => {
       expiresIn: 3600,
       secret: "secret",
       issuedAt: 1000,
+    }).mockResolvedValueOnce({
+      accessToken: "token",
+      expiresIn: 3600,
+      secret: "secret",
+      issuedAt: 1000,
     });
     vi.mocked(mockUpdateApp).mockResolvedValueOnce();
 

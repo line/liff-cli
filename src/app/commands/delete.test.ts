@@ -12,6 +12,7 @@ import inquire from "inquirer";
 import { LiffApiClient } from "../../api/liff.js";
 import { resolveChannel } from "../../channel/resolveChannel.js";
 import { makeDeleteCommand } from "./delete.js";
+import { getApiBaseUrl } from "../../channel/baseUrl.js";
 
 vi.mock("inquirer");
 
@@ -24,6 +25,7 @@ vi.mock("../../api/liff.js", () => {
   };
 });
 vi.mock("../../channel/resolveChannel.js");
+vi.mock("../../channel/baseUrl.js");
 
 describe("makeDeleteCommand", () => {
   let mockConsoleInfo: MockInstance<
@@ -44,6 +46,7 @@ describe("makeDeleteCommand", () => {
   });
 
   it("should delete a LIFF app successfully", async () => {
+    vi.mocked(getApiBaseUrl).mockResolvedValueOnce("https://api.line.me");
     vi.mocked(resolveChannel).mockResolvedValueOnce({
       accessToken: "token",
       expiresIn: 3600,

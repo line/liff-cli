@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { AuthApiClient } from "../api/auth.js";
 import { upsertChannel } from "./stores/channels.js";
 import { renewAccessToken } from "./renewAccessToken.js";
+import {getApiBaseUrl} from "./baseUrl.js"
 
 vi.mock("../api/auth.js", () => {
   const fn = vi.fn();
@@ -13,6 +14,7 @@ vi.mock("../api/auth.js", () => {
 });
 
 vi.mock("./stores/channels.js");
+vi.mock("./baseUrl.js");
 
 describe("renewAccessToken", () => {
   let mockFetchStatelessChannelAccessToken: AuthApiClient["fetchStatelessChannelAccessToken"];
@@ -36,6 +38,7 @@ describe("renewAccessToken", () => {
     const expiresIn = 3600;
     const issuedAt = Date.now();
 
+    vi.mocked(getApiBaseUrl).mockResolvedValueOnce("https://api.line.me");
     vi.mocked(mockFetchStatelessChannelAccessToken).mockResolvedValue({
       token_type: "Bearer",
       access_token: accessToken,

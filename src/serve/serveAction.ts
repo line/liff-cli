@@ -1,13 +1,11 @@
 import { spawn } from "node:child_process";
 import { LiffApiClient } from "../api/liff.js";
 import { resolveChannel } from "../channel/resolveChannel.js";
-import {
-  getCurrentChannelId,
-  getLiffBaseUrl,
-} from "../channel/stores/channels.js";
+import { getCurrentChannelId } from "../channel/stores/channels.js";
 import { ProxyInterface } from "./proxy/proxy-interface.js";
 import resolveEndpointUrl from "./resolveEndpointUrl.js";
 import pc from "picocolors";
+import { getLiffBaseUrl } from "../channel/baseUrl.js";
 
 export const serveAction = async (
   options: {
@@ -57,7 +55,7 @@ export const serveAction = async (
   }
 
   const httpsUrl = await proxy.connect(endpointUrl);
-  const liffBaseUrl = getLiffBaseUrl(currentChannelId);
+  const liffBaseUrl = await getLiffBaseUrl(currentChannelId);
   const liffUrl = new URL(liffBaseUrl);
   liffUrl.pathname = options.liffId;
 

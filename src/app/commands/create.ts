@@ -1,10 +1,7 @@
 import { createCommand } from "commander";
 import { LiffApiClient } from "../../api/liff.js";
 import { resolveChannel } from "../../channel/resolveChannel.js";
-import {
-  getCurrentChannelId,
-  getLiffBaseUrl,
-} from "../../channel/stores/channels.js";
+import { getLiffBaseUrl } from "../../channel/baseUrl.js";
 
 const createAction = async (options: {
   channelId?: string;
@@ -18,13 +15,7 @@ const createAction = async (options: {
       Please provide a valid channel ID or set the current channel first.
     `);
   }
-
-  const channelId = options?.channelId || getCurrentChannelId();
-  if (!channelId) {
-    throw new Error("Channel ID is required.");
-  }
-
-  const liffBaseUrl = getLiffBaseUrl(channelId);
+  const liffBaseUrl = await getLiffBaseUrl(options?.channelId);
   const client = new LiffApiClient({
     token: channelInfo.accessToken,
     baseUrl: liffBaseUrl,

@@ -1,16 +1,13 @@
 import { AuthApiClient } from "../api/auth.js";
-import {
-  ChannelInfo,
-  getApiBaseUrl,
-  upsertChannel,
-} from "./stores/channels.js";
+import { getApiBaseUrl } from "./baseUrl.js";
+import { ChannelInfo, upsertChannel } from "./stores/channels.js";
 
 export const renewAccessToken = async (
   channelId: string,
   channelSecret: string,
   issuedAt: number,
 ): Promise<ChannelInfo | undefined> => {
-  const apiBaseUrl = getApiBaseUrl(channelId);
+  const apiBaseUrl = await getApiBaseUrl(channelId);
   const client = new AuthApiClient({
     baseUrl: apiBaseUrl,
   });

@@ -2,12 +2,11 @@ import { createCommand } from "commander";
 import {
   getChannel,
   getCurrentChannelId,
-  getApiBaseUrl,
-  getLiffBaseUrl,
 } from "../../channel/stores/channels.js";
 import { BASE_URL_CONFIG } from "../constants.js";
+import { getApiBaseUrl, getLiffBaseUrl } from "../../channel/baseUrl.js";
 
-const listAction = ({ channelId }: { channelId?: string }) => {
+const listAction = async ({ channelId }: { channelId?: string }) => {
   const resolvedChannelId = channelId || getCurrentChannelId();
   if (!resolvedChannelId) {
     throw new Error(
@@ -22,8 +21,8 @@ const listAction = ({ channelId }: { channelId?: string }) => {
 
   console.info(`Configuration for channel ${resolvedChannelId}:`);
 
-  const apiBaseUrl = getApiBaseUrl(resolvedChannelId);
-  const liffBaseUrl = getLiffBaseUrl(resolvedChannelId);
+  const apiBaseUrl = await getApiBaseUrl(resolvedChannelId);
+  const liffBaseUrl = await getLiffBaseUrl(resolvedChannelId);
 
   // api-base-url = https://api.line.me (default)
   console.info(

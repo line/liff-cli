@@ -49,6 +49,11 @@ describe("serveAction", () => {
       expiresIn: 3600,
       secret: "secret",
       issuedAt: 1000,
+    }).mockResolvedValueOnce({
+      accessToken: "token",
+      expiresIn: 3600,
+      secret: "secret",
+      issuedAt: 1000,
     });
     vi.mocked(mockUpdateApp).mockResolvedValueOnce();
 
@@ -79,7 +84,12 @@ describe("serveAction", () => {
       localProxyPort: "9000",
     };
 
-    vi.mocked(resolveChannel).mockResolvedValueOnce({
+    vi.mocked(resolveChannel).mockResolvedValue({
+      accessToken: "token",
+      expiresIn: 3600,
+      secret: "secret",
+      issuedAt: 1000,
+    }).mockResolvedValue({
       accessToken: "token",
       expiresIn: 3600,
       secret: "secret",

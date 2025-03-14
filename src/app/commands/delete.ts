@@ -2,10 +2,7 @@ import { Command } from "commander";
 import { resolveChannel } from "../../channel/resolveChannel.js";
 import { LiffApiClient } from "../../api/liff.js";
 import inquirer from "inquirer";
-import {
-  getCurrentChannelId,
-  getLiffBaseUrl,
-} from "../../channel/stores/channels.js";
+import { getLiffBaseUrl } from "../../channel/baseUrl.js";
 
 const deleteAction = async (options: {
   channelId?: string;
@@ -17,6 +14,7 @@ const deleteAction = async (options: {
       Please provide a valid channel ID or set the current channel first.
     `);
   }
+  const liffBaseUrl = await getLiffBaseUrl(options?.channelId);
 
   const { confirmDelete } = await inquirer.prompt<{ confirmDelete: boolean }>([
     {
@@ -27,13 +25,6 @@ const deleteAction = async (options: {
     },
   ]);
   if (!confirmDelete) return;
-
-  const channelId = options?.channelId || getCurrentChannelId();
-  if (!channelId) {
-    throw new Error("Channel ID is required.");
-  }
-
-  const liffBaseUrl = getLiffBaseUrl(channelId);
 
   const client = new LiffApiClient({
     token: channelInfo.accessToken,

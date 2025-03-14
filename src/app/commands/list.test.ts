@@ -36,6 +36,11 @@ describe("makeListCommand", () => {
       expiresIn: 3600,
       secret: "secret",
       issuedAt: 1000,
+    }).mockResolvedValueOnce({
+      accessToken: "valid_token",
+      expiresIn: 3600,
+      secret: "secret",
+      issuedAt: 1000,
     });
     vi.mocked(mockFetchApps).mockResolvedValueOnce({
       apps: [
