@@ -1,7 +1,6 @@
 import Conf from "conf";
 
 import { promises as fs } from "fs";
-import { BASE_URL_CONFIG } from "../../config/constants.js";
 
 const packageJson: {
   name: string;
@@ -109,61 +108,4 @@ export const setCurrentChannel = (channelId: string): void => {
 
 export const getCurrentChannelId = (): string | undefined => {
   return store.get("currentChannelId");
-};
-
-export const getApiBaseUrl = (channelId: string): string => {
-  const channel = getChannel(channelId);
-  if (!channel) {
-    throw new Error(`Channel ${channelId} is not found.`);
-  }
-
-  return channel.baseUrl?.api || BASE_URL_CONFIG.api.defaultBaseUrl;
-};
-
-export const getLiffBaseUrl = (channelId: string): string => {
-  const channel = getChannel(channelId);
-  if (!channel) {
-    throw new Error(`Channel ${channelId} is not found.`);
-  }
-
-  return channel.baseUrl?.liff || BASE_URL_CONFIG.liff.defaultBaseUrl;
-};
-
-export const setApiBaseUrl = (channelId: string, apiBaseUrl: string): void => {
-  const channel = getChannel(channelId);
-  if (!channel) {
-    throw new Error(`Channel ${channelId} is not added yet.`);
-  }
-
-  const channels = store.get("channels") || {};
-  channels[channelId] = {
-    ...channel,
-    baseUrl: {
-      ...channel.baseUrl,
-      api: apiBaseUrl,
-    },
-  };
-
-  store.set("channels", channels);
-};
-
-export const setLiffBaseUrl = (
-  channelId: string,
-  liffBaseUrl: string,
-): void => {
-  const channel = getChannel(channelId);
-  if (!channel) {
-    throw new Error(`Channel ${channelId} is not added yet.`);
-  }
-
-  const channels = store.get("channels") || {};
-  channels[channelId] = {
-    ...channel,
-    baseUrl: {
-      ...channel.baseUrl,
-      liff: liffBaseUrl,
-    },
-  };
-
-  store.set("channels", channels);
 };
