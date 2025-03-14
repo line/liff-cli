@@ -29,9 +29,12 @@ export class LiffApiClient {
       },
     });
     if (!res.ok) {
-      throw new Error(
-        `Failed to fetch LIFF apps: ${res.status} ${res.statusText}`,
-      );
+      const errorRes = await res.json();
+      throw new Error(`
+Failed to fetch LIFF apps.
+Code: ${res.status}
+Message: ${errorRes.message}
+        `);
     }
     return res.json();
   }
@@ -50,9 +53,12 @@ export class LiffApiClient {
       body: JSON.stringify(request),
     });
     if (!res.ok) {
-      throw new Error(
-        `Failed to add LIFF app: ${res.status} ${res.statusText}`,
-      );
+      const errorRes = await res.json();
+      throw new Error(`
+Failed to add LIFF app.
+Code: ${res.status}
+Message: ${errorRes.message}
+        `);
     }
     return res.json();
   }
@@ -74,9 +80,12 @@ export class LiffApiClient {
       },
     );
     if (!res.ok) {
-      throw new Error(
-        `Failed to update LIFF app: ${res.status} ${res.statusText}`,
-      );
+      const errorRes = await res.json();
+      throw new Error(`
+Failed to update LIFF app.
+Code: ${res.status}
+Message: ${errorRes.message}
+        `);
     }
   }
 
@@ -92,9 +101,12 @@ export class LiffApiClient {
       },
     );
     if (!res.ok) {
-      throw new Error(
-        `Failed to delete LIFF app: ${res.status} ${res.statusText}`,
-      );
+      const errorRes = await res.json();
+      throw new Error(`
+Failed to delete LIFF app.
+Code: ${res.status}
+Message: ${errorRes.message}
+        `);
     }
   }
 }
