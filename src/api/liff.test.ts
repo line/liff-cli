@@ -31,10 +31,14 @@ describe("fetchApps", () => {
   it("should throw an error when the request fails", async () => {
     server.use(
       http.get(`${baseUrl}/liff/v1/apps`, () => {
-        return HttpResponse.json(undefined, {
-          status: 404,
-          statusText: "Not Found",
-        });
+        return HttpResponse.json(
+          {
+            message: "no LIFF app found for channel channelId.",
+          },
+          {
+            status: 404,
+          },
+        );
       }),
     );
 
@@ -43,7 +47,11 @@ describe("fetchApps", () => {
       token,
     });
     await expect(client.fetchApps()).rejects.toThrow(
-      "Failed to fetch LIFF apps: 404 Not Found",
+      `
+Failed to fetch LIFF apps.
+Code: 404
+Message: no LIFF app found for channel channelId.
+      `,
     );
   });
 });
@@ -69,10 +77,14 @@ describe("addApp", () => {
   it("should throw an error when the request fails", async () => {
     server.use(
       http.post(`${baseUrl}/liff/v1/apps`, async () => {
-        return HttpResponse.json(undefined, {
-          status: 400,
-          statusText: "Bad Request",
-        });
+        return HttpResponse.json(
+          {
+            message: "Invali value",
+          },
+          {
+            status: 400,
+          },
+        );
       }),
     );
 
@@ -82,7 +94,11 @@ describe("addApp", () => {
     });
     await expect(
       client.addApp({ view: { type: "full", url: "https://example.com" } }),
-    ).rejects.toThrow("Failed to add LIFF app: 400 Bad Request");
+    ).rejects.toThrow(`
+Failed to add LIFF app.
+Code: 400
+Message: Invali value
+      `);
   });
 });
 
@@ -107,10 +123,14 @@ describe("updateApp", () => {
   it("should throw an error when the request fails", async () => {
     server.use(
       http.put(`${baseUrl}/liff/v1/apps/liffId`, async () => {
-        return HttpResponse.json(undefined, {
-          status: 400,
-          statusText: "Bad Request",
-        });
+        return HttpResponse.json(
+          {
+            message: "Invali value",
+          },
+          {
+            status: 400,
+          },
+        );
       }),
     );
 
@@ -122,7 +142,11 @@ describe("updateApp", () => {
       client.updateApp("liffId", {
         view: { type: "full", url: "https://example.com" },
       }),
-    ).rejects.toThrow("Failed to update LIFF app: 400 Bad Request");
+    ).rejects.toThrow(`
+Failed to update LIFF app.
+Code: 400
+Message: Invali value
+`);
   });
 });
 
@@ -145,10 +169,15 @@ describe("deleteApp", () => {
   it("should throw an error when the request fails", async () => {
     server.use(
       http.delete(`${baseUrl}/liff/v1/apps/liffId`, () => {
-        return HttpResponse.json(undefined, {
-          status: 400,
-          statusText: "Bad Request",
-        });
+        return HttpResponse.json(
+          {
+            message: "Not found",
+          },
+          {
+            status: 400,
+            statusText: "Bad Request",
+          },
+        );
       }),
     );
 
@@ -156,8 +185,10 @@ describe("deleteApp", () => {
       baseUrl,
       token,
     });
-    await expect(client.deleteApp("liffId")).rejects.toThrow(
-      "Failed to delete LIFF app: 400 Bad Request",
-    );
+    await expect(client.deleteApp("liffId")).rejects.toThrow(`
+Failed to delete LIFF app.
+Code: 400
+Message: Not found
+`);
   });
 });
