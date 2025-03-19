@@ -41,7 +41,7 @@ export class NgrokV1Proxy implements ProxyInterface {
     const pty = await tryImportNodePty();
     this.ptyProcess = pty.spawn(shell, [], {
       name: "xterm-color",
-      cols: 150,
+      cols: 200,
       rows: 30,
       cwd: process.env.HOME,
       env: process.env,
