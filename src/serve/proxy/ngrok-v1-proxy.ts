@@ -7,7 +7,7 @@ import type pty from "node-pty";
 import { ProxyInterface } from "./proxy-interface.js";
 
 function extractUrl(input: string): string | null {
-  const urlRegex = /(https:\/\/[^\s]+)->/;
+  const urlRegex = /(https:\/\/[^\s]+)\s+->/;
   const match = input.match(urlRegex);
   return match ? match[1] : null;
 }
@@ -35,13 +35,13 @@ export class NgrokV1Proxy implements ProxyInterface {
   async connect(targetUrl: URL): Promise<URL> {
     const targetPort = targetUrl.port;
 
-    const command = `${this.config.ngrokCommand} ${targetPort}`;
+    const command = `${this.config.ngrokCommand} http ${targetPort}`;
 
     const shell = os.platform() === "win32" ? "powershell.exe" : "bash";
     const pty = await tryImportNodePty();
     this.ptyProcess = pty.spawn(shell, [], {
       name: "xterm-color",
-      cols: 80,
+      cols: 150,
       rows: 30,
       cwd: process.env.HOME,
       env: process.env,
