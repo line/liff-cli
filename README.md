@@ -151,7 +151,9 @@ To start the server, use one of the following commands:
 $ liff-cli serve \
     --liff-id <liffId> \
     --url <url> \
-    --proxy-type <local-proxy | ngrok-v1>
+    --proxy-type <local-proxy | ngrok-v1> \
+    --inspect \
+    --ngrok-command <ngrokCommand>
 ```
 
 or
@@ -161,8 +163,9 @@ $ liff-cli serve \
     --liff-id <liffId> \
     --host <host> \
     --port <port> \
-    --proxy-type <local-proxy | ngrok-v1>
-
+    --proxy-type <local-proxy | ngrok-v1> \
+    --inspect \
+    --ngrok-command <ngrokCommand>
 ```
 
 ## Development
