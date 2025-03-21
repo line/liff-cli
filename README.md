@@ -152,7 +152,8 @@ $ liff-cli serve \
     --liff-id <liffId> \
     --url <url> \
     --proxy-type <local-proxy | ngrok-v1> \
-    --inspect
+    --inspect \
+    --ngrok-command <ngrokCommand>
 ```
 
 or
@@ -163,8 +164,8 @@ $ liff-cli serve \
     --host <host> \
     --port <port> \
     --proxy-type <local-proxy | ngrok-v1> \
-    --inspect
-
+    --inspect \
+    --ngrok-command <ngrokCommand>
 ```
 
 ## Development
