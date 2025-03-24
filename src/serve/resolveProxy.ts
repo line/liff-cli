@@ -47,7 +47,6 @@ export const resolveProxy = (
 
   if (options.proxyType === "ngrok-v3") {
     console.warn("ngrok-v3 is experimental feature.");
-    // Use the same proxy instance for both to avoid multiple ngrok sessions
     const ngrokProxy = new NgrokProxy({
       ngrokCommand: options.ngrokCommand,
     });
