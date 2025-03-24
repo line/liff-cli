@@ -35,7 +35,7 @@ export class NgrokV1Proxy implements ProxyInterface {
   async connect(targetUrl: URL): Promise<URL> {
     const targetPort = targetUrl.port;
 
-    const command = `${this.config.ngrokCommand} http ${targetPort}`;
+    const command = `${this.config.ngrokCommand} ${targetPort}`;
 
     const shell = os.platform() === "win32" ? "powershell.exe" : "bash";
     const pty = await tryImportNodePty();
