@@ -66,13 +66,13 @@ export class NgrokProxy implements ProxyInterface {
 
       this.childProcess.stdout?.on("data", (data) => {
         const dataStr = data.toString();
-
         stdoutBuffer += dataStr;
         const url = extractUrlFromJson(stdoutBuffer);
 
         if (url) {
           clearTimeout(timeout);
           resolve(new URL(url));
+          stdoutBuffer = "";
         }
       });
 
