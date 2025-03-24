@@ -55,7 +55,7 @@ export class NgrokProxy implements ProxyInterface {
 
     const command = `${this.config.ngrokCommand} http ${targetPort} --log=stdout --log-format=json`;
 
-    return new Promise<URL>((resolve, reject) => {
+    const promise =  new Promise<URL>((resolve, reject) => {
       const timeout = setTimeout(() => {
         reject(new Error("Could not find ngrok URL from the output."));
       }, 10000);
@@ -92,6 +92,7 @@ export class NgrokProxy implements ProxyInterface {
         }
       });
     });
+    return promise;
   }
 
   async cleanup(): Promise<void> {
