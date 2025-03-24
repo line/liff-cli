@@ -1,6 +1,7 @@
 import path from "path";
 
 import { LocalProxy } from "./proxy/local-proxy.js";
+import { NgrokProxy } from "./proxy/ngrok-proxy.js";
 import { NgrokV1Proxy } from "./proxy/ngrok-v1-proxy.js";
 import { ProxyInterface } from "./proxy/proxy-interface.js";
 
@@ -41,6 +42,18 @@ export const resolveProxy = (
       liffInspectorProxy: new NgrokV1Proxy({
         ngrokCommand: options.ngrokCommand,
       }),
+    };
+  }
+
+  if (options.proxyType === "ngrok-v3") {
+    console.warn("ngrok-v3 is experimental feature.");
+    // Use the same proxy instance for both to avoid multiple ngrok sessions
+    const ngrokProxy = new NgrokProxy({
+      ngrokCommand: options.ngrokCommand,
+    });
+    return {
+      liffAppProxy: ngrokProxy,
+      liffInspectorProxy: ngrokProxy,
     };
   }
 
