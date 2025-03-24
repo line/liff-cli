@@ -47,12 +47,14 @@ export const resolveProxy = (
 
   if (options.proxyType === "ngrok-v3") {
     console.warn("ngrok-v3 is experimental feature.");
-    const ngrokProxy = new NgrokProxy({
-      ngrokCommand: options.ngrokCommand,
-    });
+
     return {
-      liffAppProxy: ngrokProxy,
-      liffInspectorProxy: ngrokProxy,
+      liffAppProxy: new NgrokProxy({
+        ngrokCommand: options.ngrokCommand,
+      }),
+      liffInspectorProxy: new NgrokProxy({
+        ngrokCommand: options.ngrokCommand,
+      }),
     };
   }
 
