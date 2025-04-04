@@ -45,16 +45,10 @@ export const resolveProxy = (
     };
   }
 
-  if (options.proxyType === "ngrok-v3") {
-    console.warn("ngrok-v3 is experimental feature.");
-
+  if (options.proxyType === "ngrok") {
     return {
-      liffAppProxy: new NgrokProxy({
-        ngrokCommand: options.ngrokCommand,
-      }),
-      liffInspectorProxy: new NgrokProxy({
-        ngrokCommand: options.ngrokCommand,
-      }),
+      liffAppProxy: new NgrokProxy(),
+      liffInspectorProxy: new NgrokProxy(),
     };
   }
 

@@ -1,101 +1,62 @@
-import { exec } from "node:child_process";
-
+import { URL } from "node:url";
+import * as ngrok from "@ngrok/ngrok";
 import { ProxyInterface } from "./proxy-interface.js";
 
-function isNgrokUrl(url: string): boolean {
-  try {
-    const urlObj = new URL(url);
-
-    return (
-      urlObj.hostname.endsWith("ngrok.io") ||
-      urlObj.hostname.endsWith("ngrok-free.app") ||
-      /\.ngrok\.dev$/.test(urlObj.hostname) ||
-      /\.ngrok\.app$/.test(urlObj.hostname)
-    );
-  } catch {
-    return false;
-  }
-}
-
-function extractUrlFromJson(jsonLog: string): string | null {
-  try {
-    const lines = jsonLog.trim().split("\n");
-
-    for (const line of lines) {
-      try {
-        const logEntry = JSON.parse(line);
-
-        if (logEntry.url && isNgrokUrl(logEntry.url)) {
-          return logEntry.url;
-        }
-      } catch {
-        continue;
-      }
-    }
-    return null;
-  } catch {
-    return null;
-  }
-}
-
-type NgrokProxyConfig = {
-  ngrokCommand: string;
-};
-
 export class NgrokProxy implements ProxyInterface {
-  private childProcess?: ReturnType<typeof exec>;
+  private session: ngrok.Session | null = null;
+  private listener: ngrok.Listener | null = null;
 
-  constructor(private config: NgrokProxyConfig) {}
+  constructor() {}
 
   async connect(targetUrl: URL): Promise<URL> {
-    const targetPort = targetUrl.port;
+    try {
+      const targetPort = parseInt(targetUrl.port, 10);
 
-    const command = `${this.config.ngrokCommand} http ${targetPort} --log=stdout --log-format=json`;
+      if (isNaN(targetPort)) {
+        throw new Error("Invalid port number");
+      }
 
-    const promise = new Promise<URL>((resolve, reject) => {
-      const timeout = setTimeout(() => {
-        reject(new Error("Could not find ngrok URL from the output."));
-      }, 10000);
+      const targetHost = targetUrl.hostname;
 
-      this.childProcess = exec(command);
+      const builder = new ngrok.SessionBuilder();
 
-      let stdoutBuffer = "";
-
-      this.childProcess.stdout?.on("data", (data) => {
-        const dataStr = data.toString();
-        stdoutBuffer += dataStr;
-        const url = extractUrlFromJson(stdoutBuffer);
-
-        if (url) {
-          clearTimeout(timeout);
-          resolve(new URL(url));
-          stdoutBuffer = "";
-        }
+      builder.handleDisconnection((addr, error) => {
+        console.log(`Disconnected from ngrok server ${addr}: ${error}`);
+        console.log("Attempting to reconnect...");
+        return true;
       });
 
-      this.childProcess.stderr?.on("data", (data) => {
-        console.error(`ngrok error: ${data}`);
-      });
+      this.session = await builder.connect();
 
-      this.childProcess.on("error", (error) => {
-        clearTimeout(timeout);
-        reject(new Error(`ngrok process error: ${error.message}`));
-      });
+      this.listener = await this.session.httpEndpoint().listen();
 
-      this.childProcess.on("exit", (code) => {
-        if (code !== 0) {
-          clearTimeout(timeout);
-          reject(new Error(`ngrok process exited with code ${code}`));
-        }
-      });
-    });
-    return promise;
+      const url = this.listener.url();
+      if (!url) {
+        throw new Error("ngrok did not provide a URL");
+      }
+
+      this.listener.forward(`${targetHost}:${targetPort}`);
+
+      return new URL(url);
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error(`Failed to establish ngrok connection: ${String(error)}`);
+    }
   }
 
   async cleanup(): Promise<void> {
-    if (this.childProcess) {
-      this.childProcess.kill();
-      this.childProcess = undefined;
-    }
+
+      if (this.listener) {
+        await this.listener.close();
+        this.listener = null;
+      }
+
+      if (this.session) {
+        await this.session.close();
+        this.session = null;
+      }
+    
   }
 }
