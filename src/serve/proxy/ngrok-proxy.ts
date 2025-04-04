@@ -42,9 +42,6 @@ type NgrokProxyConfig = {
   ngrokCommand: string;
 };
 
-/**
- * @experimental
- */
 export class NgrokProxy implements ProxyInterface {
   private childProcess?: ReturnType<typeof exec>;
 
