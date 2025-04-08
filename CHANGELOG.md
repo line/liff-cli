@@ -1,6 +1,27 @@
 # Changelog
 
 
+## v0.3.1
+
+[compare changes](https://github.com/line/liff-cli/compare/v0.3.0...v0.3.1)
+
+### 🩹 Fixes
+
+- The virtual terminal settings and regular expression changes ([#16](https://github.com/line/liff-cli/pull/16))
+
+### 📖 Documentation
+
+- Update README to include '--ngrok-command' flag for ngrok v1 integration ([#15](https://github.com/line/liff-cli/pull/15))
+
+### 🤖 CI
+
+- Pin version of GitHub Actions using SHA ([#14](https://github.com/line/liff-cli/pull/14))
+
+### ❤️ Contributors
+
+- キンジョウ ([@kinjo1130](http://github.com/kinjo1130))
+- Odan ([@odanado](http://github.com/odanado))
+
 ## v0.3.0
 
 
