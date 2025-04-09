@@ -107,7 +107,7 @@ Options:
   --host <host>                                           The host of the application server.
   --port <port>                                           The port number of the application server.
   -i, --inspect                                           The flag indicates LIFF app starts on debug mode. (default: false)
-  --proxy-type <proxyType>                                The type of proxy to use. local-proxy or ngrok-v1 (default: "local-proxy")
+  --proxy-type <proxyType>                                The type of proxy to use. local-proxy, ngrok-v1, or ngrok (default: "local-proxy")
   --local-proxy-port <localProxyPort>                     The port number of the application proxy server to listen on when running the CLI. (default: "9000")
   --local-proxy-inspector-port <localProxyInspectorPort>  The port number of the inspector proxy server to listen on when running the CLI. (default: "9223")
   --ngrok-command <ngrokCommand>                          The command to run ngrok. (default: "ngrok")
