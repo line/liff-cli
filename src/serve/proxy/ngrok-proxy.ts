@@ -14,7 +14,7 @@ export class NgrokProxy implements ProxyInterface {
       const targetHost = targetUrl.hostname;
 
       if (!process.env.NGROK_AUTHTOKEN) {
-        throw new Error(
+        console.error(
           "Set your authtoken in the NGROK_AUTHTOKEN environment variable",
         );
       }
