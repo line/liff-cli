@@ -35,7 +35,7 @@ export class NgrokProxy implements ProxyInterface {
       throw new Error("ngrok did not provide a URL");
     }
 
-    this.listener.forward(`${targetHost}:${targetPort}`);
+    await this.listener.forward(`${targetHost}:${targetPort}`);
 
     return new URL(url);
   }
