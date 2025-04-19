@@ -45,6 +45,7 @@
     "vitest": "1.6.0"
   },
   "dependencies": {
+    "@ngrok/ngrok": "1.4.1",
     "commander": "11.1.0",
     "conf": "12.0.0",
     "http-proxy": "1.18.1",
