@@ -3,7 +3,6 @@ import * as ngrok from "@ngrok/ngrok";
 import { ProxyInterface } from "./proxy-interface.js";
 
 export class NgrokProxy implements ProxyInterface {
-  private listener: ngrok.Listener | null = null;
   private session: ngrok.Session | null = null;
 
   constructor() {}
@@ -28,22 +27,22 @@ export class NgrokProxy implements ProxyInterface {
     });
 
     this.session = await builder.authtokenFromEnv().connect();
-    this.listener = await this.session.httpEndpoint().listen();
+    const listener = await this.session.httpEndpoint().listen();
 
-    const url = this.listener.url();
+    const url = listener.url();
     if (!url) {
       throw new Error("ngrok did not provide a URL");
     }
 
-    await this.listener.forward(`${targetHost}:${targetPort}`);
+    await listener.forward(`${targetHost}:${targetPort}`);
 
     return new URL(url);
   }
 
   async cleanup(): Promise<void> {
-    if (this.listener) {
-      await ngrok.disconnect(this.listener.url());
-      this.listener = null;
+    if (this.session) {
+      await this.session.close();
+      this.session = null;
     }
   }
 }
