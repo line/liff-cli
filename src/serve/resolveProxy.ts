@@ -1,6 +1,7 @@
 import path from "path";
 
 import { LocalProxy } from "./proxy/local-proxy.js";
+import { NgrokProxy } from "./proxy/ngrok-proxy.js";
 import { NgrokV1Proxy } from "./proxy/ngrok-v1-proxy.js";
 import { ProxyInterface } from "./proxy/proxy-interface.js";
 
@@ -41,6 +42,13 @@ export const resolveProxy = (
       liffInspectorProxy: new NgrokV1Proxy({
         ngrokCommand: options.ngrokCommand,
       }),
+    };
+  }
+
+  if (options.proxyType === "ngrok") {
+    return {
+      liffAppProxy: new NgrokProxy(),
+      liffInspectorProxy: new NgrokProxy(),
     };
   }
 
