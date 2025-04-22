@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v0.4.0
+
+
+### 🚀 Enhancements
+
+- Add ngrok support ([#17](https://github.com/line/liff-cli/pull/17))
+
+### ❤️ Contributors
+
+- キンジョウ ([@kinjo1130](http://github.com/kinjo1130))
+
 ## v0.3.1
 
 [compare changes](https://github.com/line/liff-cli/compare/v0.3.0...v0.3.1)
