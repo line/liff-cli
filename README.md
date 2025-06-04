@@ -137,7 +137,7 @@ $ mkcert localhost
 #### When using `ngrok-v1`
 
 > [!WARNING]
-> This feature is experimental.
+> This feature is deprecated.
 
 Before using the `serve` command, you need to install [ngrok](https://github.com/inconshreveable/ngrok) and [node-pty](https://www.npmjs.com/package/node-pty).
 
