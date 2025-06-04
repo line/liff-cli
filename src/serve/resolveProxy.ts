@@ -34,7 +34,9 @@ export const resolveProxy = (
   }
 
   if (options.proxyType === "ngrok-v1") {
-    console.warn("ngrok-v1 is experimental feature.");
+    console.warn(
+      `proxyType 'ngrok-v1' is deprecated. Please use 'ngrok' instead.`,
+    );
     return {
       liffAppProxy: new NgrokV1Proxy({
         ngrokCommand: options.ngrokCommand,
