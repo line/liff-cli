@@ -19,7 +19,7 @@ export const installServeCommands = (program: Command) => {
     )
     .option(
       "--proxy-type <proxyType>",
-      "The type of proxy to use. local-proxy, ngrok-v1, or ngrok",
+      "The type of proxy to use. local-proxy or ngrok",
       "local-proxy",
     )
     .option(
