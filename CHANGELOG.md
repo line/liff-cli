@@ -1,6 +1,20 @@
 # Changelog
 
 
+## v0.4.1
+
+[compare changes](https://github.com/line/liff-cli/compare/v0.4.0...v0.4.1)
+
+### 🩹 Fixes
+
+- Remove `await` from `listener.forward()` on NgrokProxy class ([#18](https://github.com/line/liff-cli/pull/18))
+- Add `@deprecated` to NgrokV1Proxy ([#19](https://github.com/line/liff-cli/pull/19))
+
+### ❤️ Contributors
+
+- Odan ([@odanado](https://github.com/odanado))
+- Hiroki Zenigami ([@zenizh](https://github.com/zenizh))
+
 ## v0.4.0
 
 
