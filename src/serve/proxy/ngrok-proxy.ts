@@ -8,7 +8,7 @@ export class NgrokProxy implements ProxyInterface {
   constructor() {}
 
   async connect(targetUrl: URL): Promise<URL> {
-    const targetPort = targetUrl.port;
+    const targetPort = targetUrl.port || (targetUrl.protocol === "https:" ? "443" : "80");
     const targetHost = targetUrl.hostname;
 
     if (!process.env.NGROK_AUTHTOKEN) {
