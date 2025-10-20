@@ -36,7 +36,10 @@ export class NgrokProxy implements ProxyInterface {
 
     listener.forward(`${targetHost}:${targetPort}`);
 
-    return new URL(url);
+    const urlWithPath = new URL(url);
+    urlWithPath.pathname = targetUrl.pathname;
+    urlWithPath.search = targetUrl.search;
+    return urlWithPath;
   }
 
   async cleanup(): Promise<void> {
