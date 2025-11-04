@@ -39,6 +39,7 @@ export class NgrokProxy implements ProxyInterface {
     const urlWithPath = new URL(url);
     urlWithPath.pathname = targetUrl.pathname;
     urlWithPath.search = targetUrl.search;
+    urlWithPath.hash = targetUrl.hash;
     return urlWithPath;
   }
 
