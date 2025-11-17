@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.4.2
+
+[compare changes](https://github.com/line/liff-cli/compare/v0.4.1...v0.4.2)
+
+### 🩹 Fixes
+
+- Ngrok proxy endpoint URL handling ([#21](https://github.com/line/liff-cli/pull/21))
+
+### ❤️ Contributors
+
+- Sumihiro Ueda ([@sumihiro](http://github.com/sumihiro))
+
 ## v0.4.1
 
 [compare changes](https://github.com/line/liff-cli/compare/v0.4.0...v0.4.1)
