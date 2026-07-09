@@ -1,13 +1,18 @@
 import { AuthApiClient } from "../api/auth.js";
-import { ChannelInfo, upsertChannel } from "./stores/channels.js";
+import {
+  ChannelInfo,
+  DEFAULT_API_BASE_URL,
+  upsertChannel,
+} from "./stores/channels.js";
 
 export const renewAccessToken = async (
   channelId: string,
   channelSecret: string,
   issuedAt: number,
+  apiBaseUrl: string = DEFAULT_API_BASE_URL,
 ): Promise<ChannelInfo | undefined> => {
   const client = new AuthApiClient({
-    baseUrl: "https://api.line.me",
+    baseUrl: apiBaseUrl,
   });
   const res = await client.fetchStatelessChannelAccessToken({
     channelId: channelId,
@@ -22,5 +27,6 @@ export const renewAccessToken = async (
     res.access_token,
     res.expires_in,
     issuedAt,
+    apiBaseUrl,
   );
 };

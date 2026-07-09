@@ -7,8 +7,8 @@ const deleteAction = async (options: {
   channelId?: string;
   liffId: string;
 }) => {
-  const accessToken = (await resolveChannel(options?.channelId))?.accessToken;
-  if (!accessToken) {
+  const channel = await resolveChannel(options?.channelId);
+  if (!channel?.accessToken) {
     throw new Error(`Access token not found.
       Please provide a valid channel ID or set the current channel first.
     `);
@@ -25,8 +25,8 @@ const deleteAction = async (options: {
   if (!confirmDelete) return;
 
   const client = new LiffApiClient({
-    token: accessToken,
-    baseUrl: "https://api.line.me",
+    token: channel.accessToken,
+    baseUrl: channel.apiBaseUrl,
   });
   console.info(`Deleting LIFF app...`);
   await client.deleteApp(options.liffId);

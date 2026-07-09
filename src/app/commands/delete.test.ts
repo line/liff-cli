@@ -49,6 +49,7 @@ describe("makeDeleteCommand", () => {
       expiresIn: 3600,
       secret: "secret",
       issuedAt: 1000,
+      apiBaseUrl: "https://api.line.me",
     });
     vi.mocked(inquire.prompt).mockResolvedValue({ confirmDelete: true });
 
@@ -105,6 +106,7 @@ describe("makeDeleteCommand", () => {
       expiresIn: 3600,
       secret: "secret",
       issuedAt: 1000,
+      apiBaseUrl: "https://api.line.me",
     });
     vi.mocked(inquire.prompt).mockResolvedValue({ confirmDelete: false });
 

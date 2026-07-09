@@ -67,6 +67,7 @@ describe("serveAction", () => {
       expiresIn: 3600,
       secret: "secret",
       issuedAt: 1000,
+      apiBaseUrl: "https://api.line.me",
     });
     vi.mocked(mockUpdateApp).mockResolvedValueOnce();
 
@@ -93,6 +94,7 @@ describe("serveAction", () => {
       expiresIn: 3600,
       secret: "secret",
       issuedAt: 1000,
+      apiBaseUrl: "https://api.line.me",
     });
     vi.mocked(mockUpdateApp).mockResolvedValueOnce();
 
@@ -141,6 +143,7 @@ describe("serveAction", () => {
       expiresIn: 3600,
       secret: "secret",
       issuedAt: 1000,
+      apiBaseUrl: "https://api.line.me",
     });
     vi.mocked(mockUpdateApp).mockResolvedValueOnce();
 

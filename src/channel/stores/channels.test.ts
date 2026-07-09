@@ -36,6 +36,7 @@ describe("channels", () => {
       const accessToken = "access_token";
       const expiresIn = 3600;
       const issuedAt = 1000;
+      const apiBaseUrl = "https://api.line.me";
 
       vi.mocked(mockConf.get).mockReturnValueOnce({});
 
@@ -45,6 +46,7 @@ describe("channels", () => {
         accessToken,
         expiresIn,
         issuedAt,
+        apiBaseUrl,
       );
 
       expect(mockConf.set).toHaveBeenCalledWith("channels", {
@@ -53,6 +55,7 @@ describe("channels", () => {
           accessToken,
           expiresIn,
           issuedAt,
+          apiBaseUrl,
         },
       });
       expect(channel).toStrictEqual({
@@ -60,6 +63,7 @@ describe("channels", () => {
         accessToken,
         expiresIn,
         issuedAt,
+        apiBaseUrl,
       });
     });
 
@@ -69,6 +73,7 @@ describe("channels", () => {
       const accessToken = "access_token";
       const expiresIn = 3600;
       const issuedAt = 1000;
+      const apiBaseUrl = "https://api.example.com";
 
       vi.mocked(mockConf.get).mockReturnValueOnce({
         "123": {
@@ -76,6 +81,7 @@ describe("channels", () => {
           accessToken: "old",
           expiresIn: 10,
           issuedAt: 900,
+          apiBaseUrl: "https://api.line.me",
         },
       });
 
@@ -85,6 +91,7 @@ describe("channels", () => {
         accessToken,
         expiresIn,
         issuedAt,
+        apiBaseUrl,
       );
 
       expect(mockConf.set).toHaveBeenCalledWith("channels", {
@@ -93,6 +100,7 @@ describe("channels", () => {
           accessToken,
           expiresIn,
           issuedAt,
+          apiBaseUrl,
         },
       });
       expect(channel).toStrictEqual({
@@ -100,6 +108,7 @@ describe("channels", () => {
         accessToken,
         expiresIn,
         issuedAt,
+        apiBaseUrl,
       });
     });
   });
@@ -108,6 +117,25 @@ describe("channels", () => {
     it("should get a channel", () => {
       const channelId = "123";
       const channelData = {
+        secret: "secret",
+        accessToken: "access_token",
+        expiresIn: 3600,
+        issuedAt: 1000,
+        apiBaseUrl: "https://api.example.com",
+      };
+
+      vi.mocked(mockConf.get).mockReturnValueOnce({
+        [channelId]: channelData,
+      });
+
+      const result = getChannel(channelId);
+      expect(result).toStrictEqual(channelData);
+    });
+
+    it("should fall back to the default API base URL for legacy channels", () => {
+      const channelId = "123";
+      const channelData = {
+        secret: "secret",
         accessToken: "access_token",
         expiresIn: 3600,
         issuedAt: 1000,
@@ -118,7 +146,10 @@ describe("channels", () => {
       });
 
       const result = getChannel(channelId);
-      expect(result).toStrictEqual(channelData);
+      expect(result).toStrictEqual({
+        ...channelData,
+        apiBaseUrl: "https://api.line.me",
+      });
     });
 
     it("should return undefined if there are no channels", () => {

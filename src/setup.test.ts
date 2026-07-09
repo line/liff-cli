@@ -50,12 +50,12 @@ Commands:
 Manage LIFF channels
 
 Options:
-  -h, --help       display help for command
+  -h, --help                 display help for command
 
 Commands:
-  add [channelId]  Register a LIFF channel that you want to manage
-  use [channelId]  Set the default LIFF channel to use
-  help [command]   display help for command
+  add [options] [channelId]  Register a LIFF channel that you want to manage
+  use [channelId]            Set the default LIFF channel to use
+  help [command]             display help for command
 `);
   });
 

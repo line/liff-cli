@@ -56,6 +56,7 @@ describe("initAction", () => {
       accessToken: "accessToken",
       expiresIn: 1000,
       issuedAt: 2000,
+      apiBaseUrl: "https://api.line.me",
     });
     vi.mocked(makeOptions).mockResolvedValue(TEST_OPTIONS);
 

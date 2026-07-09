@@ -43,6 +43,7 @@ describe("resolveChannel", () => {
       accessToken: "access_token",
       expiresIn: 3600,
       issuedAt: Date.now(),
+      apiBaseUrl: "https://api.line.me",
     };
     vi.mocked(getCurrentChannelId).mockReturnValueOnce(currentChannelId);
     vi.mocked(getChannel).mockReturnValueOnce(channelData);
@@ -60,6 +61,7 @@ describe("resolveChannel", () => {
       accessToken: "access_token",
       expiresIn: 3600,
       issuedAt: Date.now(),
+      apiBaseUrl: "https://api.line.me",
     };
     vi.mocked(getChannel).mockReturnValueOnce(channelData);
 
@@ -78,6 +80,7 @@ describe("resolveChannel", () => {
       accessToken: "access_token",
       expiresIn: 3600,
       issuedAt: now - 3600 * 1000 - 1,
+      apiBaseUrl: "https://api.example.com",
     };
 
     vi.mocked(getChannel).mockReturnValueOnce(channelData);
@@ -87,11 +90,17 @@ describe("resolveChannel", () => {
       accessToken: "new_access_token",
       expiresIn: 3600,
       issuedAt: now,
+      apiBaseUrl: "https://api.example.com",
     });
 
     const result = await resolveChannel();
 
     expect(result).not.toStrictEqual(channelData);
-    expect(renewAccessToken).toHaveBeenCalledWith(channelId, "secret", now);
+    expect(renewAccessToken).toHaveBeenCalledWith(
+      channelId,
+      "secret",
+      now,
+      "https://api.example.com",
+    );
   });
 });

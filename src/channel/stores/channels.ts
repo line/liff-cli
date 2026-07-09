@@ -8,6 +8,8 @@ const packageJson: {
   await fs.readFile(new URL("../../../package.json", import.meta.url), "utf8"),
 );
 
+export const DEFAULT_API_BASE_URL = "https://api.line.me";
+
 const channelsSchema = {
   currentChannelId: {
     type: "string",
@@ -32,6 +34,10 @@ const channelsSchema = {
         description:
           "The milliseconds timestamp when the access token was issued",
       },
+      apiBaseUrl: {
+        type: "string",
+        description: "The base URL of the LIFF and auth API for the channel",
+      },
     },
   },
 };
@@ -41,6 +47,7 @@ export type ChannelInfo = {
   accessToken: string;
   expiresIn: number;
   issuedAt: number;
+  apiBaseUrl: string;
 };
 
 type ChannelConfig = {
@@ -64,6 +71,7 @@ export const upsertChannel = (
   accessToken: string,
   expiresIn: number,
   issuedAt: number,
+  apiBaseUrl: string,
 ): ChannelInfo => {
   const channels = store.get("channels") || {};
   channels[channelId] = {
@@ -71,6 +79,7 @@ export const upsertChannel = (
     accessToken,
     expiresIn,
     issuedAt,
+    apiBaseUrl,
   };
 
   store.set("channels", channels);
@@ -82,7 +91,10 @@ export const getChannel = (channelId: string): ChannelInfo | undefined => {
   if (!channels || !channels[channelId]) {
     return;
   }
-  return channels[channelId];
+  return {
+    ...channels[channelId],
+    apiBaseUrl: channels[channelId].apiBaseUrl ?? DEFAULT_API_BASE_URL,
+  };
 };
 
 export const setCurrentChannel = (channelId: string): void => {

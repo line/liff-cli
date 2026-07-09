@@ -24,5 +24,10 @@ export const resolveChannel = async (
   if (now - issuedAt < expiresIn * 1000) {
     return channel;
   }
-  return renewAccessToken(currentChannelId, channel.secret, now);
+  return renewAccessToken(
+    currentChannelId,
+    channel.secret,
+    now,
+    channel.apiBaseUrl,
+  );
 };

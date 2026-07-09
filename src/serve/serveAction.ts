@@ -33,9 +33,8 @@ export const serveAction = async (
   liffAppProxy: ProxyInterface,
   liffInspectorProxy: ProxyInterface,
 ) => {
-  const accessToken = (await resolveChannel(getCurrentChannelId()))
-    ?.accessToken;
-  if (!accessToken) {
+  const channel = await resolveChannel(getCurrentChannelId());
+  if (!channel?.accessToken) {
     throw new Error(`Access token not found.
         Please set the current channel first.
         `);
@@ -56,8 +55,8 @@ export const serveAction = async (
   liffUrl.pathname = options.liffId;
 
   const client = new LiffApiClient({
-    token: accessToken,
-    baseUrl: "https://api.line.me",
+    token: channel.accessToken,
+    baseUrl: channel.apiBaseUrl,
   });
   if (wssUrl) {
     httpsUrl.searchParams.set("li.origin", wssUrl.toString());
