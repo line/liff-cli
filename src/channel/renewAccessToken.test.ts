@@ -35,21 +35,29 @@ describe("renewAccessToken", () => {
     const accessToken = "new_access_token";
     const expiresIn = 3600;
     const issuedAt = Date.now();
+    const apiBaseUrl = "https://api.example.com";
 
     vi.mocked(mockFetchStatelessChannelAccessToken).mockResolvedValue({
       token_type: "Bearer",
       access_token: accessToken,
       expires_in: expiresIn,
     });
-    vi.mocked(upsertChannel).mockResolvedValue({
+    vi.mocked(upsertChannel).mockReturnValue({
       secret: channelSecret,
       accessToken,
       expiresIn,
       issuedAt,
+      apiBaseUrl,
     });
 
-    const result = await renewAccessToken(channelId, channelSecret, issuedAt);
+    const result = await renewAccessToken(
+      channelId,
+      channelSecret,
+      issuedAt,
+      apiBaseUrl,
+    );
 
+    expect(AuthApiClient).toHaveBeenCalledWith({ baseUrl: apiBaseUrl });
     expect(
       vi.mocked(mockFetchStatelessChannelAccessToken),
     ).toHaveBeenCalledWith({
@@ -62,12 +70,14 @@ describe("renewAccessToken", () => {
       accessToken,
       expiresIn,
       issuedAt,
+      apiBaseUrl,
     );
     expect(result).toStrictEqual({
       secret: channelSecret,
       accessToken,
       expiresIn,
       issuedAt,
+      apiBaseUrl,
     });
   });
 

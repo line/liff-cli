@@ -46,6 +46,7 @@ describe("makeUseCommand", () => {
       expiresIn: 3600,
       secret: "secret",
       issuedAt: 1000,
+      apiBaseUrl: "https://api.line.me",
     });
 
     const command = makeUseCommand();

@@ -3,16 +3,16 @@ import { LiffApiClient } from "../../api/liff.js";
 import { resolveChannel } from "../../channel/resolveChannel.js";
 
 const listAction = async (options: { channelId?: string }) => {
-  const accessToken = (await resolveChannel(options?.channelId))?.accessToken;
-  if (!accessToken) {
+  const channel = await resolveChannel(options?.channelId);
+  if (!channel?.accessToken) {
     throw new Error(`Access token not found.
       Please provide a valid channel ID or set the current channel first.
     `);
   }
 
   const client = new LiffApiClient({
-    token: accessToken,
-    baseUrl: "https://api.line.me",
+    token: channel.accessToken,
+    baseUrl: channel.apiBaseUrl,
   });
   const { apps } = await client.fetchApps();
 

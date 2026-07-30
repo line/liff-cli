@@ -44,6 +44,7 @@ describe("makeCreateCommand", () => {
       expiresIn: 3600,
       secret: "secret",
       issuedAt: 1000,
+      apiBaseUrl: "https://api.line.me",
     });
     vi.mocked(mockAddApp).mockResolvedValueOnce({ liffId: "12345" });
 
@@ -85,6 +86,7 @@ describe("makeCreateCommand", () => {
         expiresIn: 3600,
         secret: "secret",
         issuedAt: 1000,
+        apiBaseUrl: "https://api.line.me",
       });
 
       const command = makeCreateCommand();
