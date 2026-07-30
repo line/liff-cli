@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.5.0
+
+[compare changes](https://github.com/line/liff-cli/compare/v0.4.2...v0.5.0)
+
+### 🚀 Enhancements
+
+- Add --api-base-url option to channel add ([#22](https://github.com/line/liff-cli/pull/22))
+
+### ❤️ Contributors
+
+- Sora Nakahara
+
 ## v0.4.2
 
 [compare changes](https://github.com/line/liff-cli/compare/v0.4.1...v0.4.2)
