@@ -21,6 +21,7 @@ jobs:
         with:
           node-version-file: ./.nvmrc
 
+      - run: npm install -g npm@12
       - run: npm ci
       - run: node --run build
 
