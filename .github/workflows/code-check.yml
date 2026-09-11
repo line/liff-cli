@@ -27,6 +27,7 @@ jobs:
           echo "${tmpdir}" >> "$GITHUB_PATH"
 
       - run: mkcert localhost
+      - run: npm install -g npm@12
       - run: npm ci
       - run: npm run code-check
       - run: npm run test
