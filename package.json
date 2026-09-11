@@ -30,6 +30,12 @@
       "onFail": "error"
     }
   },
+  "allowScripts": {
+    "esbuild": false,
+    "fsevents": false,
+    "msw": false,
+    "node-pty": false
+  },
   "license": "Apache-2.0",
   "devDependencies": {
     "@types/http-proxy": "1.17.15",
