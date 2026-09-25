@@ -26,7 +26,7 @@
   "devEngines": {
     "packageManager": {
       "name": "npm",
-      "version": ">=12.0.0",
+      "version": ">=11.16.0",
       "onFail": "error"
     }
   },
@@ -40,7 +40,7 @@
   "devDependencies": {
     "@types/http-proxy": "1.17.15",
     "@types/inquirer": "9.0.7",
-    "@types/node": "22.20.1",
+    "@types/node": "24.13.6",
     "@typescript-eslint/eslint-plugin": "6.7.3",
     "@typescript-eslint/parser": "6.7.3",
     "changelogen": "0.5.5",
